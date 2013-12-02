@@ -5,13 +5,18 @@ jQuery [1] plugin for synchronizing multiple (2-n) video.js [2] videos.
 
 Browser support
 ---------------
+
+Successfully tested on (Fedora 19 and/or Mac OS X 10.9):
+
 - Firefox
-  - 25
+	- 25
+- Safari
+	- 7
 - Chrome/Chromium
-  - 27-31
+	- 27-31
 - Opera
-  - 12
-  - 18
+	- 12
+	- 18
 
 Attention
 ---------
