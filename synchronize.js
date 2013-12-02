@@ -269,8 +269,8 @@
     /**
      * Checks every checkBufferInterval ms whether all videos have a buffer to continue playing.
      * If not:
-     *   - player pauses automatically\
-     *   - starts automatically when enough buffered
+     *   - player pauses automatically
+     *   - starts automatically playing again when enough is buffered
      */
     function setBufferChecker() {
 	bufferChecker = window.setInterval(function() {
@@ -330,7 +330,6 @@
      */
     function doWhenDataLoaded(videoId, func) {
 	videojs(videoId).on("loadeddata", function() {
-	    var videoId = getVideoId(this);
 	    func();
 	});
     }
@@ -405,8 +404,7 @@
 			    registerEvents();
 			}
 		    });
-		});	
-		
+		});
 	    }
 	} else {
 	    log("To synchronize videos, there have to be at least two of them.");

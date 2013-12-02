@@ -3,6 +3,15 @@ Synchronize.js
 
 jQuery [1] plugin for synchronizing multiple (2-n) video.js [2] videos.
 
+Browser support
+---------------
+- Firefox
+  - works fine
+- Chrome/Chromium (videos locally hosted)
+  - works fine
+- Chrome/Chromium (videos not locally hosted)
+  - does not work (Chrome/Chromium only initializes the first video display)
+
 Usage
 -----
 
