@@ -1,5 +1,6 @@
 TODO
 ====
 
-- check events for buffering of all videos
+- improve buffering strategy
+- disable sound of the slave videos properly
 - ...

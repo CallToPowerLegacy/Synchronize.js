@@ -1,145 +1,127 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-	<title>Synchronize.js test</title>
+    <title>Synchronize.js test</title>
 
-	<link href="css/video-js.css" rel="stylesheet" type="text/css">
-	<link href="css/videojs.thumbnails.css" rel="stylesheet">
+    <link href="css/video-js.css" rel="stylesheet" type="text/css">
+    <link href="css/videojs.thumbnails.css" rel="stylesheet">
 
-	<script src="js/lib/video.js"></script>
-	<script src="js/lib/jquery.js"></script>
-	<script src="js/synchronize.js"></script>
-	<script src="js/plugins/videojs.thumbnails.js"></script>
+    <script src="js/lib/video.js"></script>
+    <script src="js/lib/jquery.js"></script>
+    <script src="js/synchronize.js"></script>
+    <script src="js/plugins/videojs.thumbnails.js"></script>
 
-	<script>
-	    videojs.options.flash.swf = "swf/video-js.swf";
-		videoId1 = "example_video_1";
-		videoId2 = "example_video_2";
-		videoId3 = "example_video_3";
+    <script>
+        videojs.options.flash.swf = "swf/video-js.swf";
+        videoId1 = "example_video_1";
+        videoId2 = "example_video_2";
+        videoId3 = "example_video_3";
 
-		$(document).ready(function() {
-	                $.synchronizeVideos(0, videoId1, videoId2, videoId3);
+        $(document).ready(function () {
+            $.synchronizeVideos(0, videoId1, videoId2, videoId3);
 
-			// Check player ready states
-			videojs(videoId1).ready(function() {
-				videojs("example_video_1").on("timeupdate", function() {
-					$("#currentTime").html(videojs("example_video_1").currentTime());
-				});
-			
-				videojs("example_video_1").thumbnails({
-				  0: {
-				    src: 'img/thumbnails.png',
-				    style: {
-				      left: '-60px',
-				      width: '600px',
-				      height: '68px',
-				      clip: 'rect(0, 120px, 68px, 0)'
-				    }
-				  },
-				  10: {
-				    style: {
-				      left: '-180px',
-				      clip: 'rect(0, 240px, 68px, 120px)'
-				    }
-				  },
-				  20: {
-				    style: {
-				      left: '-300px',
-				      clip: 'rect(0, 360px, 68px, 240px)'
-				    }
-				  },
-				  30: {
-				    style: {
-				      left: '-420px',
-				      clip: 'rect(0, 480px, 68px, 360px)'
-				    }
-				  },
-				  40: {
-				    style: {
-				      left: '-540px',
-				      clip: 'rect(0, 600px, 68px, 480px)'
-				    }
-				  }
-				});
-			});
-		});
-	</script>
+            // Check player ready states
+            videojs(videoId1).ready(function () {
+                videojs("example_video_1").on("timeupdate", function () {
+                    $("#currentTime").html(videojs("example_video_1").currentTime());
+                });
+
+                videojs("example_video_1").thumbnails({
+                    0: {
+                        src: 'img/thumbnails.png',
+                        style: {
+                            left: '-60px',
+                            width: '600px',
+                            height: '68px',
+                            clip: 'rect(0, 120px, 68px, 0)'
+                        }
+                    },
+                    10: {
+                        style: {
+                            left: '-180px',
+                            clip: 'rect(0, 240px, 68px, 120px)'
+                        }
+                    },
+                    20: {
+                        style: {
+                            left: '-300px',
+                            clip: 'rect(0, 360px, 68px, 240px)'
+                        }
+                    },
+                    30: {
+                        style: {
+                            left: '-420px',
+                            clip: 'rect(0, 480px, 68px, 360px)'
+                        }
+                    },
+                    40: {
+                        style: {
+                            left: '-540px',
+                            clip: 'rect(0, 600px, 68px, 480px)'
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </head>
-<body>
 
-	<video
-		id="example_video_1"
-		class="video-js vjs-default-skin"
-		controls
-		width="640"
-		height="264"
-		poster="img/oceans-clip.png"
-		data-setup='{
+<body>
+    <video id="example_video_1" class="video-js vjs-default-skin" controls width="640" height="264" poster="img/oceans-clip.png" data-setup='{
 			"controls": true,
 			"autoplay": false,
 			"preload": "auto"
 		}'>
-	        <!--
-	        <source src="videos/oceans-clip.mp4" type='video/mp4' />
-		<source src="videos/oceans-clip.webm" type='video/webm' />
-		<source src="videos/oceans-clip.ogv" type='video/ogg' />
+        <!-- download videos from 
+			- http://video-js.zencoder.com/oceans-clip.mp4
+			- http://video-js.zencoder.com/oceans-clip.webm
+			- http://video-js.zencoder.com/oceans-clip.ogv
 		-->
-		<source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
-		<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
-		<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
-		<track kind="captions" src="captions/captions.vtt" srclang="en" label="English"></track>
-		<track kind="subtitles" src="captions/captions.vtt" srclang="en" label="English"></track>
-	</video>
+        <source src="videos/oceans-clip-1.mp4" type='video/mp4' />
+        <source src="videos/oceans-clip-1.webm" type='video/webm' />
+        <source src="videos/oceans-clip-1.ogv" type='video/ogg' />
+        <track kind="captions" src="captions/captions.vtt" srclang="en" label="English"></track>
+        <track kind="subtitles" src="captions/captions.vtt" srclang="en" label="English"></track>
+    </video>
 
-	<video
-		id="example_video_2"
-		class="video-js vjs-default-skin"
-		width="640"
-		height="264"
-		poster="img/oceans-clip.png"
-		data-setup='{
+    <video id="example_video_2" class="video-js vjs-default-skin" width="640" height="264" poster="img/oceans-clip.png" data-setup='{
 			"controls": false,
 			"autoplay": false,
 			"preload": "auto"
 		}'>
-	        <!--
-	        <source src="videos/oceans-clip.mp4" type='video/mp4' />
+        <!--
+	    <source src="videos/oceans-clip.mp4" type='video/mp4' />
 		<source src="videos/oceans-clip.webm" type='video/webm' />
 		<source src="videos/oceans-clip.ogv" type='video/ogg' />
 		-->
-		<source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
-		<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
-		<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
-		<track kind="captions" src="captions/captions.vtt" srclang="en" label="English"></track>
-		<track kind="subtitles" src="captions/captions.vtt" srclang="en" label="English"></track>
-	</video>
+        <source src="videos/oceans-clip-2.mp4" type='video/mp4' />
+        <source src="videos/oceans-clip-2.webm" type='video/webm' />
+        <source src="videos/oceans-clip-2.ogv" type='video/ogg' />
+        <track kind="captions" src="captions/captions.vtt" srclang="en" label="English"></track>
+        <track kind="subtitles" src="captions/captions.vtt" srclang="en" label="English"></track>
+    </video>
 
-	<video
-		id="example_video_3"
-		class="video-js vjs-default-skin"
-		width="640"
-		height="264"
-		poster="img/oceans-clip.png"
-		data-setup='{
+    <video id="example_video_3" class="video-js vjs-default-skin" width="640" height="264" poster="img/oceans-clip.png" data-setup='{
 			"controls": false,
 			"autoplay": false,
 			"preload": "auto"
 		}'>
-	        <!--
-	        <source src="videos/oceans-clip.mp4" type='video/mp4' />
+        <!--
+	    <source src="videos/oceans-clip.mp4" type='video/mp4' />
 		<source src="videos/oceans-clip.webm" type='video/webm' />
 		<source src="videos/oceans-clip.ogv" type='video/ogg' />
 		-->
-		<source src="http://video-js.zencoder.com/oceans-clip.mp4" type='video/mp4' />
-		<source src="http://video-js.zencoder.com/oceans-clip.webm" type='video/webm' />
-		<source src="http://video-js.zencoder.com/oceans-clip.ogv" type='video/ogg' />
-		<track kind="captions" src="captions/captions.vtt" srclang="en" label="English"></track>
-		<track kind="subtitles" src="captions/captions.vtt" srclang="en" label="English"></track>
-	</video>
+        <source src="videos/oceans-clip-3.mp4" type='video/mp4' />
+        <source src="videos/oceans-clip-3.webm" type='video/webm' />
+        <source src="videos/oceans-clip-3.ogv" type='video/ogg' />
+        <track kind="captions" src="captions/captions.vtt" srclang="en" label="English"></track>
+        <track kind="subtitles" src="captions/captions.vtt" srclang="en" label="English"></track>
+    </video>
 
-	<div>Current time: <span id="currentTime">0</span> seconds.</div>
+    <div>Current time: <span id="currentTime">0</span> seconds.</div>
 
-	<button id="buttonBufferChecker" type="button">Stop buffer checker</button>
-
+    <button id="buttonBufferChecker" type="button">Stop buffer checker</button>
 </body>
+
 </html>

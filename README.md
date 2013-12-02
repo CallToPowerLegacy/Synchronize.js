@@ -7,22 +7,16 @@ Browser support
 ---------------
 - Firefox
   - 25
-    - videos locally hosted
-      - works
-    - videos not locally hosted
-      - works
-- Chrome/Chromium (videos locally hosted)
-  - 27
-    - videos locally hosted
-      - works
-    - videos not locally hosted
-      - does not work (Chrome/Chromium only initializes the first video display)
+- Chrome/Chromium
+  - 27-31
 - Opera
   - 12
-    - videos locally hosted
-      - works
-    - videos not locally hosted
-      - works
+  - 18
+
+Attention
+---------
+- Chrome/Chromium only initializes all video displays properly when the video sources are different per video tag
+- Have a look at the TODO file
 
 Usage
 -----
