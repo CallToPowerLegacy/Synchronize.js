@@ -6,11 +6,23 @@ jQuery [1] plugin for synchronizing multiple (2-n) video.js [2] videos.
 Browser support
 ---------------
 - Firefox
-  - works fine
+  - 25
+    - videos locally hosted
+      - works
+    - videos not locally hosted
+      - works
 - Chrome/Chromium (videos locally hosted)
-  - works fine
-- Chrome/Chromium (videos not locally hosted)
-  - does not work (Chrome/Chromium only initializes the first video display)
+  - 27
+    - videos locally hosted
+      - works
+    - videos not locally hosted
+      - does not work (Chrome/Chromium only initializes the first video display)
+- Opera
+  - 12
+    - videos locally hosted
+      - works
+    - videos not locally hosted
+      - works
 
 Usage
 -----
