@@ -11,9 +11,13 @@
     var masterVideoId;
 
     var lastSynch = 0;
-    var synchInterval = 1000;
+    var synchInterval = 1000; // ms
     var seekAhead = 0; // seek to "time + seekAhead" because of the video.js buffering
     var synchGap = 1;
+
+    var bufferChecker;
+    var checkBufferInterval = 5000; // ms
+    var playWhenBuffered = false;
 
     /**
      * Logs given arguments -- uses console.log
@@ -181,7 +185,7 @@
 		    if (!seek(videoIds[i], ct1 + seekAhead)) {
 			pause(videoIds[i]);
 		    } else {
-			play(videoIds[i]);
+			// play(videoIds[i]);
 		    }
 		}
 	    }
@@ -207,6 +211,7 @@
             });
 
             masterPlayer.on("pause", function() {
+		playWhenBuffered = false;
 		for(var i = 0; i < videoIds.length; ++i) {
 		    if(videoIds[i] != masterVideoId) {
 			pause(videoIds[i]);
@@ -216,6 +221,7 @@
             });
 
             masterPlayer.on("ended", function() {
+		playWhenBuffered = false;
 		for(var i = 0; i < videoIds.length; ++i) {
 		    if(videoIds[i] != masterVideoId) {
             		synchronize();
@@ -225,6 +231,7 @@
             });
 
             masterPlayer.on("ended", function() {
+		playWhenBuffered = false;
 		for(var i = 0; i < videoIds.length; ++i) {
 		    if(videoIds[i] != masterVideoId) {
 			pause(videoIds[i]);
@@ -234,15 +241,15 @@
 
             masterPlayer.on("timeupdate", function() {
 		var video;
-		var slavePaused;
+		var paused;
             	var now = Date.now();
 		for(var i = 0; i < videoIds.length; ++i) {
 		    if(videoIds[i] != masterVideoId) {
-			slavePaused = isPaused(videoIds[i]);
+			paused = isPaused(videoIds[i]);
 			if (isPaused(masterVideoId) || ((now - lastSynch) > synchInterval)) {
             		    synchronize();
 			    lastSynch = now;
-			    if (slavePaused) {
+			    if (paused) {
 				pause(videoIds[i]);
 			    }
 			}
@@ -250,11 +257,58 @@
 		}
             });
 
+	    setBufferChecker();
+
 	    return true;
 	} else {
 	    pause(masterVideoId);
 	    return false;
 	}
+    }
+
+    /**
+     * Checks every checkBufferInterval ms whether all videos have a buffer to continue playing.
+     * If not:
+     *   - player pauses automatically\
+     *   - starts automatically when enough buffered
+     */
+    function setBufferChecker() {
+	bufferChecker = window.setInterval(function() {
+	    var allBuffered = true;
+	    
+	    var currTime = getCurrentTime(masterVideoId);
+	    for(var i = 0; i < videoIds.length; ++i) {
+		var  bufferedTimeRange = videojs(videoIds[i]).buffered();
+
+		// number of different ranges of time have been buffered
+		var numberOfRanges = bufferedTimeRange.length;
+		// time in seconds when the first range starts
+		var firstRangeStart = bufferedTimeRange.start(0);
+		// time in seconds when the first range ends
+		var firstRangeEnd = bufferedTimeRange.end(0);
+		// length in seconds of the first time range
+		var firstRangeLength = firstRangeEnd - firstRangeStart;
+
+		if(bufferedTimeRange && numberOfRanges > 0) {
+		    var duration = getDuration(videoIds[i]);
+		    var currTimePlusBuffer = currTime + checkBufferInterval;
+		    currTimePlusBuffer = (currTimePlusBuffer > duration) ? duration : currTimePlusBuffer;
+		    allBuffered = allBuffered && (firstRangeLength >= currTimePlusBuffer);
+		} else {
+		    allBuffered = false;
+		}
+	    }
+
+	    if(!allBuffered) {
+		log("Not every player has buffered, yet. Pausing...");
+		playWhenBuffered = true;
+		pause(masterVideoId);
+	    } else if(playWhenBuffered) {
+		log("Every player has buffered now. Starting playing again...");
+		playWhenBuffered = false;
+		play(masterVideoId);
+	    }
+	}, checkBufferInterval);
     }
 
     /**
