@@ -1,12 +1,12 @@
 Synchronize.js
 ==============
 
-jQuery [1] plugin for synchronizing multiple (2-n) video.js [2] videos.
+jQuery [1] plugin for synchronizing multiple video.js [2] html5 video elements.
 
 Browser support
 ---------------
 
-Successfully tested on (Fedora 19 and/or Mac OS X 10.9):
+Successfully tested on [3]:
 
 - Firefox
 	- 25
@@ -33,6 +33,8 @@ $.synchronizeVideos(masterVideoNumber, videoId1, videoId2, ... , videoIdN);
 
 Example
 -------
+
+A more detailed example can be found under "/example" after checking out this repository.
 
 ### JavaScript:
 
@@ -103,3 +105,4 @@ $(document).ready(function() {
 
 [1] https://github.com/jquery/jquery
 [2] https://github.com/videojs/video.js
+[3] Fedora 19 and/or Mac OS X 10.9
