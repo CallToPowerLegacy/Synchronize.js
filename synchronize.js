@@ -15,9 +15,11 @@
     var seekAhead = 0; // seek to "time + seekAhead" because of the video.js buffering
     var synchGap = 1;
 
+    var bufferCheckerSet = false;
     var bufferChecker;
-    var checkBufferInterval = 5000; // ms
+    var checkBufferInterval = 2000; // ms
     var playWhenBuffered = false;
+    var bufferInterval = 1; // s
 
     /**
      * Logs given arguments -- uses console.log
@@ -201,6 +203,10 @@
 	if(allVideoIdsInitialized()) {
 	    var masterPlayer = videojs(masterVideoId);
             masterPlayer.on("play", function() {
+		if(!bufferCheckerSet) {
+		    bufferCheckerSet = true;
+		    setBufferChecker();
+		}
 		for(var i = 0; i < videoIds.length; ++i) {
 		    if(videoIds[i] != masterVideoId) {
             		setVolume(videoIds[i]);
@@ -211,7 +217,6 @@
             });
 
             masterPlayer.on("pause", function() {
-		playWhenBuffered = false;
 		for(var i = 0; i < videoIds.length; ++i) {
 		    if(videoIds[i] != masterVideoId) {
 			pause(videoIds[i]);
@@ -221,7 +226,6 @@
             });
 
             masterPlayer.on("ended", function() {
-		playWhenBuffered = false;
 		for(var i = 0; i < videoIds.length; ++i) {
 		    if(videoIds[i] != masterVideoId) {
             		synchronize();
@@ -231,7 +235,6 @@
             });
 
             masterPlayer.on("ended", function() {
-		playWhenBuffered = false;
 		for(var i = 0; i < videoIds.length; ++i) {
 		    if(videoIds[i] != masterVideoId) {
 			pause(videoIds[i]);
@@ -256,8 +259,6 @@
 		    }
 		}
             });
-
-	    setBufferChecker();
 
 	    return true;
 	} else {
@@ -289,9 +290,9 @@
 		// length in seconds of the first time range
 		var firstRangeLength = firstRangeEnd - firstRangeStart;
 
-		if(bufferedTimeRange && numberOfRanges > 0) {
+		if(bufferedTimeRange && (numberOfRanges > 0)) {
 		    var duration = getDuration(videoIds[i]);
-		    var currTimePlusBuffer = currTime + checkBufferInterval;
+		    var currTimePlusBuffer = currTime + bufferInterval;
 		    currTimePlusBuffer = (currTimePlusBuffer > duration) ? duration : currTimePlusBuffer;
 		    allBuffered = allBuffered && (firstRangeLength >= currTimePlusBuffer);
 		} else {

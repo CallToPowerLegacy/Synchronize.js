@@ -1,6 +1,6 @@
 TODO
 ====
 
-- improve buffering strategy
 - disable sound of the slave videos properly
+- improve automatically playing after buffering stopped when hit pause/video ended etc.
 - ...
