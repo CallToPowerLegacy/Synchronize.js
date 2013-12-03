@@ -78,7 +78,7 @@
      * @return true if id is not undefined and volume has been set, -1 else
      */
     function setVolume(id, vol) {
-        if (id) {
+        if (id && vol) {
             return videojs(id).volume(vol);
         } else {
             return -1;
@@ -209,7 +209,7 @@
 		}
 		for(var i = 0; i < videoIds.length; ++i) {
 		    if(videoIds[i] != masterVideoId) {
-            		setVolume(videoIds[i]);
+            		setVolume(videoIds[i], 0);
             		synchronize();
             		play(videoIds[i]);
 		    }
