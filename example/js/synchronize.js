@@ -12,8 +12,7 @@
 
     var lastSynch = 0;
     var synchInterval = 1000; // ms
-    var seekAhead = 0; // seek to "time + seekAhead" because of the video.js buffering
-    var synchGap = 1;
+    var synchGap = 0.5; // s
 
     var bufferCheckerSet = false;
     var bufferChecker;
@@ -183,9 +182,9 @@
             if (videoIds[i] != masterVideoId) {
                 ct2 = getCurrentTime(videoIds[i]);
                 // currentTime in seconds!
-                if ((ct1 != -1) && (ct2 != -1) && !isInInterval(ct2, ct1 - synchGap, ct1 + synchGap)) {
+                if ((ct1 != -1) && (ct2 != -1) && !isInInterval(ct2, ct1 - synchGap, ct1)) {
                     log("Synchronizing. Master@" + ct1 + ", slave@" + ct2);
-                    if (!seek(videoIds[i], ct1 + seekAhead)) {
+                    if (!seek(videoIds[i], ct1)) {
                         pause(videoIds[i]);
                     }
                 }
@@ -416,4 +415,3 @@
         });
     }
 })(jQuery);
-
