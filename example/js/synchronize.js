@@ -346,6 +346,12 @@
         startClicked = true;
     }
 
+    function initialPause() {
+        var myPlayer = this;
+        pause(getVideoId(this));
+        startClicked = false;
+    }
+
     /**
      * @param masterVidNumber [0, n-1]
      * @param videoId1
@@ -372,6 +378,7 @@
                 var plMVN = playerMasterVidNumber;
 
                 videojs(videoIds[i]).on("play", initialPlay);
+                videojs(videoIds[i]).on("pause", initialPause);
                 videojs(videoIds[i]).ready(function () {
                     var playerName = getVideoId(this);
 
@@ -386,6 +393,7 @@
                             setMasterVideoId(plMVN);
                             for (var i = 0; i < videoIds.length; ++i) {
                                 videojs(videoIds[i]).off("play", initialPlay);
+                                videojs(videoIds[i]).off("pause", initialPause);
                             }
                             registerEvents();
                             if (startClicked) {
