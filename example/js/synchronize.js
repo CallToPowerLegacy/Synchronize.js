@@ -19,6 +19,8 @@
     var bufferChecker;
     var checkBufferInterval = 2000; // ms
     var playWhenBuffered = false;
+    var ignoreNextPause = false;
+    var hitPauseWhileBuffering = false;
     var bufferInterval = 1; // s
 
     /**
@@ -185,8 +187,6 @@
                     log("Synchronizing. Master@" + ct1 + ", slave@" + ct2);
                     if (!seek(videoIds[i], ct1 + seekAhead)) {
                         pause(videoIds[i]);
-                    } else {
-                        // play(videoIds[i]);
                     }
                 }
             }
@@ -202,6 +202,7 @@
         if (allVideoIdsInitialized()) {
             var masterPlayer = videojs(masterVideoId);
             masterPlayer.on("play", function () {
+                hitPauseWhileBuffering = false;
                 if (!bufferCheckerSet) {
                     bufferCheckerSet = true;
                     setBufferChecker();
@@ -209,13 +210,14 @@
                 for (var i = 0; i < videoIds.length; ++i) {
                     if (videoIds[i] != masterVideoId) {
                         setVolume(videoIds[i], 0);
-                        synchronize();
                         play(videoIds[i]);
                     }
                 }
             });
 
             masterPlayer.on("pause", function () {
+                hitPauseWhileBuffering = !ignoreNextPause && playWhenBuffered && true;
+                ignoreNextPause = ignoreNextPause ? !ignoreNextPause : ignoreNextPause;
                 for (var i = 0; i < videoIds.length; ++i) {
                     if (videoIds[i] != masterVideoId) {
                         pause(videoIds[i]);
@@ -225,32 +227,26 @@
             });
 
             masterPlayer.on("ended", function () {
+                hitPauseWhileBuffering = true;
                 for (var i = 0; i < videoIds.length; ++i) {
                     if (videoIds[i] != masterVideoId) {
                         synchronize();
-                        pause(videoIds[i]);
-                    }
-                }
-            });
-
-            masterPlayer.on("ended", function () {
-                for (var i = 0; i < videoIds.length; ++i) {
-                    if (videoIds[i] != masterVideoId) {
                         pause(videoIds[i]);
                     }
                 }
             });
 
             masterPlayer.on("timeupdate", function () {
-                var video;
-                var paused;
+                hitPauseWhileBuffering = true;
                 var now = Date.now();
-                for (var i = 0; i < videoIds.length; ++i) {
-                    if (videoIds[i] != masterVideoId) {
-                        paused = isPaused(videoIds[i]);
-                        if (isPaused(masterVideoId) || ((now - lastSynch) > synchInterval)) {
+                if (((now - lastSynch) > synchInterval) || isPaused(masterVideoId)) {
+                    lastSynch = now;
+                    var video;
+                    var paused;
+                    for (var i = 0; i < videoIds.length; ++i) {
+                        if (videoIds[i] != masterVideoId) {
+                            paused = isPaused(videoIds[i]);
                             synchronize();
-                            lastSynch = now;
                             if (paused) {
                                 pause(videoIds[i]);
                             }
@@ -275,6 +271,8 @@
     function setBufferChecker() {
         bufferChecker = window.setInterval(function () {
             var allBuffered = true;
+
+            console.log("inside");
 
             var currTime = getCurrentTime(masterVideoId);
             for (var i = 0; i < videoIds.length; ++i) {
@@ -302,11 +300,17 @@
             if (!allBuffered) {
                 log("Not every player has buffered, yet. Pausing...");
                 playWhenBuffered = true;
+                ignoreNextPause = true;
                 pause(masterVideoId);
-            } else if (playWhenBuffered) {
+                hitPauseWhileBuffering = false;
+            } else if (playWhenBuffered && !hitPauseWhileBuffering) {
                 log("Every player has buffered now. Starting playing again...");
                 playWhenBuffered = false;
                 play(masterVideoId);
+                hitPauseWhileBuffering = false;
+            } else if (playWhenBuffered) {
+                log("Every player has buffered now, but there was a timeupdate, pause, ... event...");
+                playWhenBuffered = false;
             }
         }, checkBufferInterval);
     }
@@ -412,3 +416,4 @@
         });
     }
 })(jQuery);
+

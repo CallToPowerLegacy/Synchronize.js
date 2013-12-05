@@ -21,7 +21,6 @@ Successfully tested on [3]:
 Attention
 ---------
 - Chrome/Chromium only initializes all video displays properly when the video sources are different per video tag
-- Have a look at the TODO file
 
 Usage
 -----
