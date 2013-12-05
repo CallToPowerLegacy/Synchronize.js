@@ -14,6 +14,8 @@
     var synchInterval = 1000; // ms
     var synchGap = 0.5; // s
 
+    var startClicked = false;
+
     var bufferCheckerSet = false;
     var bufferChecker;
     var checkBufferInterval = 2000; // ms
@@ -26,7 +28,7 @@
      * Logs given arguments -- uses console.log
      *
      * @param any arguments console.log-valid
-     * @return true if window.console exists and arguments had been logged, false else
+     * @return true if window.console exists and arguments had been logged
      */
     function log() {
         if (loggingEnabled && window.console) {
@@ -46,10 +48,10 @@
      * @param num the number to check
      * @param lower lower check
      * @param upper upper check
-     * @return true if num is in [lower, upper], false else
+     * @return true if num is in [lower, upper]
      */
     function isInInterval(num, lower, upper) {
-        if (num && lower && upper && (lower <= upper)) {
+        if (!isNaN(num) && !isNaN(lower) && !isNaN(upper) && (lower <= upper)) {
             return ((num >= lower) && (num <= upper));
         } else {
             return false;
@@ -60,14 +62,10 @@
      * Play video
      *
      * @param id video id
-     * @return true if id is not undefined and video plays, -1 else
+     * @return true if id is not undefined and video plays
      */
     function play(id) {
-        if (id) {
-            return videojs(id).play();
-        } else {
-            return -1;
-        }
+        return videojs(id).play();
     }
 
     /**
@@ -75,84 +73,60 @@
      *
      * @param id video id
      * @param vol the volume
-     * @return true if id is not undefined and volume has been set, -1 else
+     * @return true if id is not undefined and volume has been set
      */
     function setVolume(id, vol) {
-        if (id && vol) {
-            return videojs(id).volume(vol);
-        } else {
-            return -1;
-        }
+        return videojs(id).volume(vol);
     }
 
     /**
      * Pause video
      *
      * @param id video id
-     * @return true if id is not undefined and video has been paused, -1 else
+     * @return true if id is not undefined and video has been paused
      */
     function pause(id) {
-        if (id) {
-            return videojs(id).pause();
-        } else {
-            return -1;
-        }
+        return videojs(id).pause();
     }
 
     /**
      * Check whether video is paused
      *
      * @param id video id
-     * @return id is not undefined and whether is paused, false else
+     * @return id is not undefined and whether is paused
      */
     function isPaused(id) {
-        if (id) {
-            return videojs(id).paused();
-        } else {
-            return false;
-        }
+        return videojs(id).paused();
     }
 
     /**
      * Returns the video duration
      *
      * @param id video id
-     * @return duration if id is not undefined, -1 else
+     * @return duration if id is not undefined
      */
     function getDuration(id) {
-        if (id) {
-            return videojs(id).duration();
-        } else {
-            return -1;
-        }
+        return videojs(id).duration();
     }
 
     /**
      * Returns the current time in the video
      *
      * @param id video id
-     * @return current time if id is not undefined, -1 else
+     * @return current time if id is not undefined
      */
     function getCurrentTime(id) {
-        if (id) {
-            return videojs(id).currentTime();
-        } else {
-            return -1;
-        }
+        return videojs(id).currentTime();
     }
 
     /**
      * Returns a video.js id
      *
      * @param videojsVideo the video.js video object
-     * @return video.js id if videojsVideo is not undefined, "" else
+     * @return video.js id if videojsVideo is not undefined
      */
     function getVideoId(videojsVideo) {
-        if (videojsVideo) {
-            return videojsVideo.Q;
-        } else {
-            return "";
-        }
+        return videojsVideo.Q;
     }
 
     /**
@@ -160,10 +134,10 @@
      *
      * @param id video id
      * @param time time to seek to
-     * @param true if id is not undefined and time is in interval and successfully seeked, false else
+     * @param true if id is not undefined and time is in interval and successfully seeked
      */
     function seek(id, time) {
-        if (id && time && (time >= 0) && (time <= getDuration(id))) {
+        if (!isNaN(time) && (time >= 0) && (time <= getDuration(id))) {
             videojs(id).currentTime(time);
             return true;
         } else {
@@ -185,7 +159,9 @@
                 if ((ct1 != -1) && (ct2 != -1) && !isInInterval(ct2, ct1 - synchGap, ct1)) {
                     log("Synchronizing. Master@" + ct1 + ", slave@" + ct2);
                     if (!seek(videoIds[i], ct1)) {
-                        pause(videoIds[i]);
+                        // pause(videoIds[i]);
+                    } else {
+                        play(videoIds[i]);
                     }
                 }
             }
@@ -194,12 +170,11 @@
 
     /**
      * Registers master events on all slaves
-     *
-     * @return true if allVideoIdsInitialized and events have been set, false else
      */
     function registerEvents() {
         if (allVideoIdsInitialized()) {
             var masterPlayer = videojs(masterVideoId);
+
             masterPlayer.on("play", function () {
                 hitPauseWhileBuffering = false;
                 if (!bufferCheckerSet) {
@@ -208,7 +183,9 @@
                 }
                 for (var i = 0; i < videoIds.length; ++i) {
                     if (videoIds[i] != masterVideoId) {
-                        setVolume(videoIds[i], 0);
+                        videojs(videoIds[i]).on("play", function () {
+                            setVolume(getVideoId(this), 0);
+                        });
                         play(videoIds[i]);
                     }
                 }
@@ -244,6 +221,7 @@
                     var paused;
                     for (var i = 0; i < videoIds.length; ++i) {
                         if (videoIds[i] != masterVideoId) {
+                            setVolume(videoIds[i], 0);
                             paused = isPaused(videoIds[i]);
                             synchronize();
                             if (paused) {
@@ -253,11 +231,10 @@
                     }
                 }
             });
-
-            return true;
         } else {
-            pause(masterVideoId);
-            return false;
+            for (var i = 0; i < videoIds.length; ++i) {
+                pause(videoIds[i]);
+            }
         }
     }
 
@@ -270,8 +247,6 @@
     function setBufferChecker() {
         bufferChecker = window.setInterval(function () {
             var allBuffered = true;
-
-            console.log("inside");
 
             var currTime = getCurrentTime(masterVideoId);
             for (var i = 0; i < videoIds.length; ++i) {
@@ -365,6 +340,12 @@
         return true;
     }
 
+    function initialPlay() {
+        var myPlayer = this;
+        pause(getVideoId(this));
+        startClicked = true;
+    }
+
     /**
      * @param masterVidNumber [0, n-1]
      * @param videoId1
@@ -389,8 +370,11 @@
             for (var i = 0; i < videoIds.length; ++i) {
                 log("Collected player ID: '" + videoIds[i] + "' (ready: " + videoIdsReady[videoIds[i]] + ", initialized: " + videoIdsInit[videoIds[i]] + ")");
                 var plMVN = playerMasterVidNumber;
+
+                videojs(videoIds[i]).on("play", initialPlay);
                 videojs(videoIds[i]).ready(function () {
                     var playerName = getVideoId(this);
+
                     videoIdsReady[playerName] = true;
                     doWhenDataLoaded(playerName, function () {
                         videoIdsInit[playerName] = true;
@@ -400,7 +384,13 @@
                         if (allVideoIdsInitialized()) {
                             log("All players have been successfully initialized.");
                             setMasterVideoId(plMVN);
+                            for (var i = 0; i < videoIds.length; ++i) {
+                                videojs(videoIds[i]).off("play", initialPlay);
+                            }
                             registerEvents();
+                            if (startClicked) {
+                                play(masterVideoId);
+                            }
                         }
                     });
                 });
