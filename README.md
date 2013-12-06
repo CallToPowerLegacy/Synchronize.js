@@ -38,7 +38,10 @@ Successfully tested on:
 
 Attention
 ---------
-- Chrome/Chromium only initializes all video displays properly when the video sources are different per video tag
+- Chrome/Chromium only initializes all video displays properly when the video sources are different per video tag [4]
+
+---
+[4] see 'example/index_sameVideoSources.html'
 
 Usage
 -----
@@ -51,7 +54,7 @@ $.synchronizeVideos(masterVideoNumber, videoId1, videoId2, ... , videoIdN);
 Example
 -------
 
-A more detailed example can be found under "/example" after checking out this repository.
+A more detailed example can be found under "example" after checking out this repository.
 
 ### JavaScript:
 
