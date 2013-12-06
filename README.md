@@ -3,7 +3,12 @@ Synchronize.js
 
 jQuery [1] plugin for synchronizing multiple video.js [2] html5 video elements.
 
-Copyright 2013 Denis Meyer (for more information visit http://choosealicense.com/licenses/ [No License])
+Copyright 2013 Denis Meyer (for more information visit [3])
+
+---
+[1] https://github.com/jquery/jquery,
+[2] https://github.com/videojs/video.js,
+[3] http://choosealicense.com/licenses [No License]
 
 Screenshot
 ----------
@@ -26,10 +31,10 @@ Successfully tested on:
 	- 12 [w, m, l]
 	- 18 [w, m, l]
 
+---
 [w]indows,
 [m]ac OS X,
-[l]inux (Ubuntu, Fedora),
-[o]ther
+[l]inux (Ubuntu, Fedora)
 
 Attention
 ---------
@@ -116,9 +121,3 @@ $(document).ready(function() {
 	<source src="videos/video_3.ogv" type='video/ogg' />
 </video>
 ```
-
----
-
-[1] https://github.com/jquery/jquery
-[2] https://github.com/videojs/video.js
-[3] Fedora 19 and/or Mac OS X 10.9
