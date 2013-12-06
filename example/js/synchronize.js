@@ -260,9 +260,9 @@
             if (!allBuffered) {
                 playWhenBuffered = true;
                 ignoreNextPause = true;
-				for (var i = 0; i < videoIds.length; ++i) {
-                	pause(videoIds[i]);
-				}
+                for (var i = 0; i < videoIds.length; ++i) {
+                    pause(videoIds[i]);
+                }
                 hitPauseWhileBuffering = false;
                 $(document).trigger("sjs:buffering", []);
             } else if (playWhenBuffered && !hitPauseWhileBuffering) {

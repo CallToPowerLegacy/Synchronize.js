@@ -1,4 +1,8 @@
 /**
+ * Copyright 2013 Denis Meyer
+ */
+
+/**
  * Logs given arguments -- uses console.log
  *
  * @param any arguments console.log-valid
