@@ -210,7 +210,7 @@
                             setVolume(videoIds[i], 0);
                             paused = isPaused(videoIds[i]);
                             synchronize();
-                            if (paused) {
+                            if (paused || isPaused(masterVideoId)) {
                                 pause(videoIds[i]);
                             }
                         }

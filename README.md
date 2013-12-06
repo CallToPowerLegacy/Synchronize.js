@@ -5,6 +5,10 @@ jQuery [1] plugin for synchronizing multiple video.js [2] html5 video elements.
 
 Copyright 2013 Denis Meyer (for more information visit http://choosealicense.com/licenses/ [No License])
 
+Screenshot
+----------
+![Screenshot](img/screenshot-1.png "Screenshot")
+
 Browser support
 ---------------
 
