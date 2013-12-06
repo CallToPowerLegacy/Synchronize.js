@@ -38,10 +38,11 @@ Successfully tested on:
 
 Attention
 ---------
-- Chrome/Chromium only initializes all video displays properly when the video sources are different per video tag [4]
+- Chrome/Chromium and Opera (15+) [4] only initialize all video displays properly when the video sources are different per video tag [5]
 
 ---
-[4] see 'example/index_sameVideoSources.html'
+[4] All browsers with the blink engine ( http://www.chromium.org/blink ),
+[5] see 'example/index_sameVideoSources.html'
 
 Usage
 -----
