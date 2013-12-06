@@ -44,6 +44,10 @@ videoId2 = "example_video_2";
 videoId3 = "example_video_3";
 
 $(document).ready(function() {
+	$(document).on("sjs:allPlayersReady", function(event) {
+		// All players have been successfully initialized - do something!
+	});
+	
 	// set videoId1 (parameter 1 = 0) as master
 	$.synchronizeVideos(0, videoId1, videoId2, videoId3);
 }
