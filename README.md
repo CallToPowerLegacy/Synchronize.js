@@ -8,17 +8,24 @@ Copyright 2013 Denis Meyer (for more information visit http://choosealicense.com
 Browser support
 ---------------
 
-Successfully tested on [3]:
+Successfully tested on:
 
 - Firefox
-	- 25
+	- 25 [w, m, l]
 - Safari
-	- 7
-- Chrome/Chromium
-	- 27-31
+	- 7 [m]
+- Google Chrome
+	- 27-31 [w, m]
+- Chromium
+	- 33 [m, l]
 - Opera
-	- 12
-	- 18
+	- 12 [w, m, l]
+	- 18 [w, m, l]
+
+[w]indows,
+[m]ac OS X,
+[l]inux (Ubuntu, Fedora),
+[o]ther
 
 Attention
 ---------
