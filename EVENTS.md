@@ -1,107 +1,107 @@
 Synchronize.js - Events
 =======================
 
-# Trigger
+## Trigger
 
-## sjs:notEnoughVideos
-### Parameters:
-#### -
-### Description
+### sjs:notEnoughVideos
+#### Parameters:
+##### -
+#### Description
 When not enough videos have been given to synchronize
 
-## sjs:invalidId
-### Parameters:
-#### ID(invalid)
+### sjs:invalidId
+#### Parameters:
+##### ID(invalid)
 ID of the invalid argument
-### Description
+#### Description
 When an invalid ID occured (ignoring the ID)
 
-## sjs:idRegistered
-### Parameters:
-#### ID(registered)
+### sjs:idRegistered
+#### Parameters:
+##### ID(registered)
 ID of the registered argument
-### Description
+#### Description
 When a valid ID has been registered
 
-## sjs:playerLoaded
-### Parameters:
-#### ID(player)
+### sjs:playerLoaded
+#### Parameters:
+##### ID(player)
 ID of the player
-### Description
+#### Description
 When player has been fully loaded
 
-## sjs:masterSet
-### Parameters:
-#### ID(master)
+### sjs:masterSet
+#### Parameters:
+##### ID(master)
 ID of the master
-### Description
+#### Description
 When a master has been set
 
-## sjs:allPlayersReady
-### Parameters:
-#### -
-### Description
+### sjs:allPlayersReady
+#### Parameters:
+##### -
+#### Description
 When all players are ready
 
-## sjs:masterPlay
-### Parameters:
-#### currentTime(master)
+### sjs:masterPlay
+#### Parameters:
+##### currentTime(master)
 Current time of the master
-### Description
+#### Description
 When master starts playing
 
-## sjs:masterPause
-### Parameters:
-#### currentTime(master)
+### sjs:masterPause
+#### Parameters:
+##### currentTime(master)
 Current time of the master
-### Description
+#### Description
 When master pauses
 
-## sjs:masterEnded
-### Parameters:
-#### currentTime(master)
+### sjs:masterEnded
+#### Parameters:
+##### currentTime(master)
 Duration of the master
-### Description
+#### Description
 When master ends
 
-## sjs:masterTimeupdate
-### Parameters:
-#### currentTime(master)
+### sjs:masterTimeupdate
+#### Parameters:
+##### currentTime(master)
 Current time of the master
-### Description
+#### Description
 When a master timeupdate occurs
 
-## sjs:synchronizing
-### Parameters
-#### currentTime(master)
+### sjs:synchronizing
+#### Parameters
+##### currentTime(master)
 Current time of the master
-#### ID(slaveToSynchronize)
+##### ID(slaveToSynchronize)
 ID of the slave to be synchronized
-### Description
+#### Description
 When a slave is being synchronized with the master
 
-## sjs:buffering
-### Parameters:
-#### -
-### Description
+### sjs:buffering
+#### Parameters:
+##### -
+#### Description
 When Videos are buffering (=pausing due to buffering)
 
-## sjs:bufferedAndAutoplaying
-### Parameters:
-#### -
-### Description
+### sjs:bufferedAndAutoplaying
+#### Parameters:
+##### -
+#### Description
 When buffered and autoplaying
 
-## sjs:bufferedButNotAutoplaying
-### Parameters:
-#### -
-### Description
+### sjs:bufferedButNotAutoplaying
+#### Parameters:
+##### -
+#### Description
 When Buffered, but not autoplaying
 
-# On
+## Listener
 
-## sjs:cleanBufferChecker
-### Parameters:
-#### -
-### Description
+### sjs:cleanBufferChecker
+#### Parameters:
+##### -
+#### Description
 Unregisters the buffer checker
