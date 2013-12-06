@@ -22,7 +22,7 @@
     var playWhenBuffered = false;
     var ignoreNextPause = false;
     var hitPauseWhileBuffering = false;
-    var bufferInterval = 1; // s
+    var bufferInterval = 1.5; // s
 
     /**
      * Checks whether a number is in an interval [lower, upper]
@@ -260,7 +260,9 @@
             if (!allBuffered) {
                 playWhenBuffered = true;
                 ignoreNextPause = true;
-                pause(masterVideoId);
+				for (var i = 0; i < videoIds.length; ++i) {
+                	pause(videoIds[i]);
+				}
                 hitPauseWhileBuffering = false;
                 $(document).trigger("sjs:buffering", []);
             } else if (playWhenBuffered && !hitPauseWhileBuffering) {
