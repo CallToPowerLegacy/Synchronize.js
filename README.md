@@ -51,6 +51,16 @@ The first parameter is the number of the parameter of the master video number (s
 ```
 $.synchronizeVideos(masterVideoNumber, videoId1, videoId2, ... , videoIdN);
 ```
+Subscribe to Synchronize.js events, e.g.:
+```
+$(document).on("sjs:allPlayersReady", function(event) {
+    // All players have been successfully initialized - do something!
+});
+```
+An event documentation for events to be subscribed to can be found in the file "EVENTS.md" [6]
+
+---
+[6] https://github.com/CallToPower/Synchronize.js/blob/master/EVENTS.md
 
 Example
 -------
