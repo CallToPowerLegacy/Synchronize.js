@@ -23,7 +23,7 @@ Screenshot
 Browser support
 ---------------
 
-Fully supported (and successfully tested on):
+Fully supported (and successfully tested):
 
 - Firefox
 	- 25 `W, M, L`
@@ -37,7 +37,7 @@ Fully supported (and successfully tested on):
 - Opera
 	- 15-18 `W, M`
 
-Not supported:
+Not supported (and unsuccessfully tested):
 - Internet Explorer (crashes on page-load on a page with more than one video)
 	- 10 `W`
 	- 11 `W`
@@ -62,7 +62,9 @@ Attention
 Usage
 -----
 
-The first parameter is the number of the parameter of the master video number (starting at parameter 1 = 0, parameter 2 = 1, ...), following a variable number of video ids:
+The first parameter is the number of the parameter of the master video number (starting at parameter 1 = 0, parameter 2 = 1, ...), following a variable number of video ids.
+Synchronize.js provides listeners to subscribe to and triggers to throw to communicate with the library.
+An event documentation can be found at "EVENTS.md" [7]
 ```
 $.synchronizeVideos(masterVideoNumber, videoId1, videoId2, ... , videoIdN);
 ```
@@ -72,7 +74,6 @@ $(document).on("sjs:allPlayersReady", function(event) {
     // All players have been successfully initialized - do something!
 });
 ```
-An event documentation for events to be subscribed to can be found in the file "EVENTS.md" [7]
 
 ---
 [7] https://github.com/CallToPower/Synchronize.js/blob/master/EVENTS.md
