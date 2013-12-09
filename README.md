@@ -17,32 +17,41 @@ Screenshot
 Browser support
 ---------------
 
-Successfully tested on:
+Fully supported (and successfully tested on):
 
 - Firefox
-	- 25 [w, m, l]
+	- 25 `W, M, L`
 - Safari
-	- 7 [m]
+	- 7 `M`
 - Google Chrome
-	- 27-31 [w, m]
+	- 27-31 `W, M`
 - Chromium
-	- 33 [m, l]
+	- 27 `L`
+	- 27-33 `M`
 - Opera
-	- 12 [w, m, l]
-	- 18 [w, m, l]
+	- 15-18 `W, M`
+
+Not supported:
+- Internet Explorer (crashes on page-load on a page with more than one video)
+	- 10 `W`
+	- 11 `W`
+- Opera (videos lag)
+	- 12 `W, M, L`
 
 ---
-[w]indows,
-[m]ac OS X,
-[l]inux (Ubuntu, Fedora)
+Operating systems tested on:
+`W`indows 7+,
+`M`ac OS X 10.6+,
+`L`inux (Ubuntu 12+, Fedora 18+)
 
 Attention
 ---------
-- Chrome/Chromium and Opera (15+) [4] only initialize all video displays properly when the video sources are different per video tag [5]
+- Chrome/Chromium and Opera (15+) [4] only initialize all video displays properly when the video sources are different per video tag [5, 6]
 
 ---
 [4] All browsers with the blink engine ( http://www.chromium.org/blink ),
-[5] see 'example/index_sameVideoSources.html'
+[5] see 'example/index_sameVideoSources.html',
+[6] Chromium bug tracker: https://code.google.com/p/chromium/issues/detail?id=326593
 
 Usage
 -----
@@ -57,10 +66,10 @@ $(document).on("sjs:allPlayersReady", function(event) {
     // All players have been successfully initialized - do something!
 });
 ```
-An event documentation for events to be subscribed to can be found in the file "EVENTS.md" [6]
+An event documentation for events to be subscribed to can be found in the file "EVENTS.md" [7]
 
 ---
-[6] https://github.com/CallToPower/Synchronize.js/blob/master/EVENTS.md
+[7] https://github.com/CallToPower/Synchronize.js/blob/master/EVENTS.md
 
 Example
 -------
