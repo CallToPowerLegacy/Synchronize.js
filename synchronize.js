@@ -1,4 +1,7 @@
 /**
+ * Synchronize.js
+ * Version 1.0.0
+ *
  * Copyright 2013 Denis Meyer
  */
 (function ($) {

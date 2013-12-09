@@ -10,6 +10,10 @@ Copyright 2013 Denis Meyer (for more information visit [3])
 [2] https://github.com/videojs/video.js,
 [3] http://choosealicense.com/licenses [No License]
 
+Version
+-------
+1.0.0
+
 Screenshot
 ----------
 ![Screenshot](img/screenshot-1.png "Screenshot")
