@@ -80,58 +80,35 @@ An event documentation for events to be subscribed to can be found in the file "
 Example
 -------
 
-A more detailed example can be found under "example" after checking out this repository.
+More detailed examples (plain html5 and video.js) can be found under "examples" after checking out this repository.
 
 ### JavaScript:
 
 ```
-// the 3 html5 video elements to be synchronized
-videoId1 = "example_video_1";
-videoId2 = "example_video_2";
-videoId3 = "example_video_3";
-
 $(document).ready(function() {
 	$(document).on("sjs:allPlayersReady", function(event) {
 		// All players have been successfully initialized - do something!
 	});
 	
 	// set videoId1 (parameter 1 = 0) as master
-	$.synchronizeVideos(0, videoId1, videoId2, videoId3);
+	$.synchronizeVideos(0, "example_video_1", "example_video_2", "example_video_3");
 }
 ```
 
 ### HTML:
 
 ```
-<video
-	id="example_video_1"
-	class="myVideoClass"
-	controls
-	width="640"
-	height="264"
-	poster="img/video_1.png">
+<video id="example_video_1" controls width="640" height="264">
 	<source src="videos/video_1.mp4" type='video/mp4' />
 	<source src="videos/video_1.webm" type='video/webm' />
 	<source src="videos/video_1.ogv" type='video/ogg' />
 </video>
-<video
-	id="example_video_2"
-	class="myVideoClass"
-	controls
-	width="640"
-	height="264"
-	poster="img/video_1.png">
+<video id="example_video_2" controls width="640" height="264">
 	<source src="videos/video_2.mp4" type='video/mp4' />
 	<source src="videos/video_2.webm" type='video/webm' />
 	<source src="videos/video_2.ogv" type='video/ogg' />
 </video>
-<video
-	id="example_video_3"
-	class="myVideoClass"
-	controls
-	width="640"
-	height="264"
-	poster="img/video_1.png">
+<video id="example_video_3" controls width="640" height="264">
 	<source src="videos/video_3.mp4" type='video/mp4' />
 	<source src="videos/video_3.webm" type='video/webm' />
 	<source src="videos/video_3.ogv" type='video/ogg' />
