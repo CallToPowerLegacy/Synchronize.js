@@ -365,55 +365,21 @@
 
 			var currTime = getCurrentTime(masterVideoId);
 			
-			if(!useVideoJs()) {
-				// TODO: Not working, yet!
-				for (var i = 0; i < videoIds.length; ++i) {
-					var bufferedTimeRange = getBufferTimeRange(videoIds[i]);
-					if(bufferedTimeRange) {
-						// number of different ranges of time have been buffered
-						var numberOfRanges = bufferedTimeRange.length;
-			
-						if (numberOfRanges > 0) {
-							// time in seconds when the first range starts
-							var firstRangeStart = bufferedTimeRange.start(0);
-							// time in seconds when the first range ends
-							var firstRangeEnd = bufferedTimeRange.end(0);
-							// length in seconds of the first time range
-							var firstRangeLength = firstRangeEnd - firstRangeStart;
-							firstRangeLength = getCurrentTime(videoIds[i]) + firstRangeLength;
-
-							var duration = getDuration(videoIds[i]);
-							var currTimePlusBuffer = currTime + bufferInterval;
-							currTimePlusBuffer = (currTimePlusBuffer >= duration) ? duration : currTimePlusBuffer;
-							allBuffered = allBuffered && (firstRangeLength >= currTimePlusBuffer);
-						} else {
-							allBuffered = false;
+			for (var i = 0; i < videoIds.length; ++i) {
+				var bufferedTimeRange = getBufferTimeRange(videoIds[i]);
+				if(bufferedTimeRange) {
+					var duration = getDuration(videoIds[i]);
+					var currTimePlusBuffer = getCurrentTime(videoIds[i]) + bufferInterval;
+					var buffered = false;
+					for(j = 0; (j < bufferedTimeRange.length) && !buffered; ++j) {
+						currTimePlusBuffer = (currTimePlusBuffer >= duration) ? duration : currTimePlusBuffer;
+						if(isInInterval(currTimePlusBuffer, bufferedTimeRange.start(j), bufferedTimeRange.end(j))) {
+							buffered = true;
 						}
 					}
-				}
-			} else {
-				for (var i = 0; i < videoIds.length; ++i) {
-					var bufferedTimeRange = getBufferTimeRange(videoIds[i]);
-					if(bufferedTimeRange) {
-						// number of different ranges of time have been buffered
-						var numberOfRanges = bufferedTimeRange.length;
-				
-						if (numberOfRanges > 0) {
-							// time in seconds when the first range starts
-							var firstRangeStart = bufferedTimeRange.start(0);
-							// time in seconds when the first range ends
-							var firstRangeEnd = bufferedTimeRange.end(0);
-							// length in seconds of the first time range
-							var firstRangeLength = firstRangeEnd - firstRangeStart;
-
-							var duration = getDuration(videoIds[i]);
-							var currTimePlusBuffer = currTime + bufferInterval;
-							currTimePlusBuffer = (currTimePlusBuffer >= duration) ? duration : currTimePlusBuffer;
-							allBuffered = allBuffered && (firstRangeLength >= currTimePlusBuffer);
-						} else {
-							allBuffered = false;
-						}
-					}
+					allBuffered = allBuffered && buffered;
+				} else {
+					// Do something?
 				}
 			}
 
