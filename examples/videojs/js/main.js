@@ -31,8 +31,14 @@ function log() {
 		$(document).on("sjs:allPlayersReady", function(event) {
 			$("#bufferInfo").html("All players have been successfully initialized.");
 		});
-		$("#buttonBufferChecker").click(function () {
-			$(document).trigger("sjs:cleanBufferChecker", []);
+		$("#buttonPlay").click(function () {
+			$(document).trigger("sjs:play", []);
+		});
+		$("#buttonPause").click(function () {
+			$(document).trigger("sjs:pause", []);
+		});
+		$("#buttonResetVideo").click(function () {
+			$(document).trigger("sjs:setCurrentTime", [0]);
 		});
 		$(document).on("sjs:buffering", function(event) {
 			$("#bufferInfo").html("Not every player has buffered, yet. Pausing...");

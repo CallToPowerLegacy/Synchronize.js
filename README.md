@@ -1,15 +1,15 @@
 Synchronize.js
 ==============
 
-A library for synchronizing multiple html5 video elements.
-jQuery [1] needs to be installed.
-Works with plain html5 video elements and with video.js [2] when video.js gets detected.
+A library for synchronizing multiple HTML5 video elements.
+Implemented as a jQuery [1] plugin.
+Works with plain HTML5 video elements and with video.js [2] when video.js has been detected.
 
 Copyright 2013 Denis Meyer (for more information visit [3])
 
 ---
-[1] https://github.com/jquery/jquery,
-[2] https://github.com/videojs/video.js,
+[1] http://jquery.com,
+[2] http://www.videojs.com,
 [3] http://choosealicense.com/licenses [No License]
 
 Version
@@ -80,7 +80,7 @@ An event documentation for events to be subscribed to can be found in the file "
 Example
 -------
 
-More detailed examples (plain html5 and video.js) can be found under "examples" after checking out this repository.
+More detailed examples (plain HTML5 and video.js) can be found under "examples" after checking out this repository.
 
 ### JavaScript:
 

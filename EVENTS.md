@@ -100,7 +100,38 @@ Synchronize.js - Events
 
 ## Listener
 
-#### `sjs:cleanBufferChecker`
+#### `sjs:play`
+- Parameters
+	- /
+- Description
+	- Plays the master video
+
+#### `sjs:pause`
+- Parameters
+	- /
+- Description
+	- Pauses the master video
+
+#### `sjs:setCurrentTime`
+- Parameters
+	- time
+		- New time of the master
+- Description
+	- Tries to set the current time
+
+#### `sjs:synchronize`
+- Parameters
+	- /
+- Description
+	- Forced synchronization of all slaves with the master (normally does not have to be done manually)
+
+#### `sjs:startBufferChecker`
+- Parameters
+	- /
+- Description
+	- Starts the buffer checker (does not have to be done manually if not called 'sjs:cleanBufferChecker')
+
+#### `sjs:stopBufferChecker`
 - Parameters
 	- /
 - Description

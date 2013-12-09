@@ -30,9 +30,6 @@ function log() {
 		$(document).on("sjs:allPlayersReady", function(event) {
 			$("#bufferInfo").html("All players have been successfully initialized.");
 		});
-		$("#buttonBufferChecker").click(function () {
-			$(document).trigger("sjs:cleanBufferChecker", []);
-		});
 		$(document).on("sjs:buffering", function(event) {
 			$("#bufferInfo").html("Not every player has buffered, yet. Pausing...");
 		});

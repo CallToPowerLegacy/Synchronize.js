@@ -210,7 +210,8 @@
 	 * @return true if time has been set if id is not undefined
 	 */
 	function setCurrentTime(id, time) {
-		if (id && !isNaN(time) && (time >= 0) && (time <= getDuration(id))) {
+		var duration = getDuration(id);
+		if (id && (duration != -1) && !isNaN(time) && (time >= 0) && (time <= duration)) {
 			if (!useVideoJs()) {
 				getVideo(id).currentTime = time;
 			} else {
@@ -218,6 +219,7 @@
 			}
 			return true;
 		} else {
+			setCurrentTime(id, duration);
 			return false;
 		}
 	}
@@ -241,23 +243,6 @@
 	}
 
 	/**
-	 * Seeks in video
-	 *
-	 * @param id video id
-	 * @param time time to seek to
-	 * @param true if id is not undefined and time is in interval and successfully seeked
-	 */
-	function seek(id, time) {
-		var duration = getDuration(id);
-		if ((duration != -1) && !isNaN(time) && (time >= 0) && (time <= duration)) {
-			return setCurrentTime(id, time);
-		} else {
-			setCurrentTime(id, duration);
-			return false;
-		}
-	}
-
-	/**
 	 * Synchronizes all slaves with the master
 	 */
 	function synchronize() {
@@ -269,7 +254,7 @@
 				// currentTime in seconds!
 				if ((ct1 != -1) && (ct2 != -1) && !isInInterval(ct2, ct1 - synchGap, ct1)) {
 					$(document).trigger("sjs:synchronizing", [ct1, videoIds[i]]);
-					if (!seek(videoIds[i], ct1)) {
+					if (!setCurrentTime(videoIds[i], ct1)) {
 						// pause(videoIds[i]);
 					} else {
 						play(videoIds[i]);
@@ -514,7 +499,7 @@
 					getVideoObj(videoIds[i]).ready(function () {
 						++nrOfPlayersReady;
 
-						if (nrOfPlayersReady == videoIds.length) {
+						if (allVideoIdsInitialized()) {
 							setMasterVideoId(plMVN);
 							for (var i = 0; i < videoIds.length; ++i) {
 								getVideoObj(videoIds[i]).off("play", initialPlay);
@@ -564,8 +549,36 @@
 			$(document).trigger("sjs:notEnoughVideos", []);
 		}
 
-		$(document).on("sjs:cleanBufferChecker", function () {
+		$(document).on("sjs:play", function (e) {
+			if (allVideoIdsInitialized()) {
+				play(masterVideoId);
+			}
+		});
+		$(document).on("sjs:pause", function (e) {
+			if (allVideoIdsInitialized()) {
+				pause(masterVideoId);
+			}
+		});
+		$(document).on("sjs:setCurrentTime", function (e, time) {
+			if (allVideoIdsInitialized()) {
+				setCurrentTime(masterVideoId, time);
+			}
+		});
+		$(document).on("sjs:synchronize", function (e) {
+			if (allVideoIdsInitialized()) {
+				synchronize();
+			}
+		});
+		$(document).on("sjs:startBufferChecker", function (e) {
+			if(!bufferCheckerSet) {
+				window.clearInterval(bufferChecker);
+				bufferCheckerSet = true;
+				setBufferChecker();
+			}
+		});
+		$(document).on("sjs:stopBufferChecker", function (e) {
 			window.clearInterval(bufferChecker);
+			bufferCheckerSet = false;
 		});
 	}
 })(jQuery);
