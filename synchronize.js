@@ -364,25 +364,56 @@
 			var allBuffered = true;
 
 			var currTime = getCurrentTime(masterVideoId);
-			for (var i = 0; i < videoIds.length; ++i) {
-				var bufferedTimeRange = getBufferTimeRange(videoIds[i]);
+			
+			if(!useVideoJs()) {
+				// TODO: Not working, yet!
+				for (var i = 0; i < videoIds.length; ++i) {
+					var bufferedTimeRange = getBufferTimeRange(videoIds[i]);
+					if(bufferedTimeRange) {
+						// number of different ranges of time have been buffered
+						var numberOfRanges = bufferedTimeRange.length;
+			
+						if (numberOfRanges > 0) {
+							// time in seconds when the first range starts
+							var firstRangeStart = bufferedTimeRange.start(0);
+							// time in seconds when the first range ends
+							var firstRangeEnd = bufferedTimeRange.end(0);
+							// length in seconds of the first time range
+							var firstRangeLength = firstRangeEnd - firstRangeStart;
+							firstRangeLength = getCurrentTime(videoIds[i]) + firstRangeLength;
 
-				// number of different ranges of time have been buffered
-				var numberOfRanges = bufferedTimeRange.length;
-				// time in seconds when the first range starts
-				var firstRangeStart = bufferedTimeRange.start(0);
-				// time in seconds when the first range ends
-				var firstRangeEnd = bufferedTimeRange.end(0);
-				// length in seconds of the first time range
-				var firstRangeLength = firstRangeEnd - firstRangeStart;
+							var duration = getDuration(videoIds[i]);
+							var currTimePlusBuffer = currTime + bufferInterval;
+							currTimePlusBuffer = (currTimePlusBuffer >= duration) ? duration : currTimePlusBuffer;
+							allBuffered = allBuffered && (firstRangeLength >= currTimePlusBuffer);
+						} else {
+							allBuffered = false;
+						}
+					}
+				}
+			} else {
+				for (var i = 0; i < videoIds.length; ++i) {
+					var bufferedTimeRange = getBufferTimeRange(videoIds[i]);
+					if(bufferedTimeRange) {
+						// number of different ranges of time have been buffered
+						var numberOfRanges = bufferedTimeRange.length;
+				
+						if (numberOfRanges > 0) {
+							// time in seconds when the first range starts
+							var firstRangeStart = bufferedTimeRange.start(0);
+							// time in seconds when the first range ends
+							var firstRangeEnd = bufferedTimeRange.end(0);
+							// length in seconds of the first time range
+							var firstRangeLength = firstRangeEnd - firstRangeStart;
 
-				if (bufferedTimeRange && (numberOfRanges > 0)) {
-					var duration = getDuration(videoIds[i]);
-					var currTimePlusBuffer = currTime + bufferInterval;
-					currTimePlusBuffer = (currTimePlusBuffer > duration) ? duration : currTimePlusBuffer;
-					allBuffered = allBuffered && (firstRangeLength >= currTimePlusBuffer);
-				} else {
-					allBuffered = false;
+							var duration = getDuration(videoIds[i]);
+							var currTimePlusBuffer = currTime + bufferInterval;
+							currTimePlusBuffer = (currTimePlusBuffer >= duration) ? duration : currTimePlusBuffer;
+							allBuffered = allBuffered && (firstRangeLength >= currTimePlusBuffer);
+						} else {
+							allBuffered = false;
+						}
+					}
 				}
 			}
 
