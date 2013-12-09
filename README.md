@@ -1,7 +1,9 @@
 Synchronize.js
 ==============
 
-jQuery [1] plugin for synchronizing multiple video.js [2] html5 video elements.
+A library for synchronizing multiple html5 video elements.
+jQuery [1] needs to be installed.
+Works with plain html5 video elements and with video.js [2] when video.js gets detected.
 
 Copyright 2013 Denis Meyer (for more information visit [3])
 
@@ -103,46 +105,33 @@ $(document).ready(function() {
 ```
 <video
 	id="example_video_1"
-	class="video-js vjs-default-skin"
+	class="myVideoClass"
 	controls
 	width="640"
 	height="264"
-	poster="img/video_1.png"
-	data-setup='{
-		"controls": true,
-		"autoplay": false,
-		"preload": "auto"
-	}'>
+	poster="img/video_1.png">
 	<source src="videos/video_1.mp4" type='video/mp4' />
 	<source src="videos/video_1.webm" type='video/webm' />
 	<source src="videos/video_1.ogv" type='video/ogg' />
 </video>
 <video
 	id="example_video_2"
-	class="video-js vjs-default-skin"
+	class="myVideoClass"
+	controls
 	width="640"
 	height="264"
-	poster="img/video_2.png"
-	data-setup='{
-		"controls": false,
-		"autoplay": false,
-		"preload": "auto"
-	}'>
+	poster="img/video_1.png">
 	<source src="videos/video_2.mp4" type='video/mp4' />
 	<source src="videos/video_2.webm" type='video/webm' />
 	<source src="videos/video_2.ogv" type='video/ogg' />
 </video>
 <video
 	id="example_video_3"
-	class="video-js vjs-default-skin"
+	class="myVideoClass"
+	controls
 	width="640"
 	height="264"
-	poster="img/video_3.png"
-	data-setup='{
-		"controls": false,
-		"autoplay": false,
-		"preload": "auto"
-	}'>
+	poster="img/video_1.png">
 	<source src="videos/video_3.mp4" type='video/mp4' />
 	<source src="videos/video_3.webm" type='video/webm' />
 	<source src="videos/video_3.ogv" type='video/ogg' />

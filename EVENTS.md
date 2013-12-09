@@ -28,7 +28,7 @@ Synchronize.js - Events
 	- ID(player)
 		- ID of the player
 - Description
-	- When player has been fully loaded
+	- When player has been fully loaded (only thrown when using video.js)
 
 #### `sjs:masterSet`
 - Parameters
