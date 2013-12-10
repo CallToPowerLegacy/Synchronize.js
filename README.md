@@ -18,7 +18,7 @@ Version
 
 Screenshot
 ----------
-![Screenshot](release/screenshot-1.png "Screenshot")
+![Screenshot](release/screenshot.png "Screenshot")
 
 Browser support
 ---------------
