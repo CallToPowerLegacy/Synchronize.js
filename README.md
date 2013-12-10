@@ -69,11 +69,17 @@ $.synchronizeVideos(masterVideoNumber, videoId1, videoId2, ... , videoIdN);
 ```
 
 Synchronize.js provides triggers to listen to and listeners to subscribe to.
-An event documentation can be found at "EVENTS.md" [7].
+An event documentation can be found at [7].
 Subscribe to Synchronize.js events, e.g.:
 ```
 $(document).on("sjs:allPlayersReady", function(event) {
     // All players have been successfully initialized - do something!
+});
+```
+Trigger Synchronize.js events, e.g.:
+```
+$("#myPlayButton").click(function () {
+    $(document).trigger("sjs:play", []);
 });
 ```
 
