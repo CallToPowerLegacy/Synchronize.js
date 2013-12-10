@@ -18,7 +18,7 @@ Version
 
 Screenshot
 ----------
-![Screenshot](img/screenshot-1.png "Screenshot")
+![Screenshot](release/screenshot-1.png "Screenshot")
 
 Browser support
 ---------------
@@ -62,12 +62,14 @@ Attention
 Usage
 -----
 
-The first parameter is the number of the parameter of the master video number (starting at parameter 1 = 0, parameter 2 = 1, ...), following a variable number of video ids.
-Synchronize.js provides listeners to subscribe to and triggers to throw to communicate with the library.
-An event documentation can be found at "EVENTS.md" [7]
+To synchronize multiple videos you have to do one function call:
+The first parameter is the number of the master video number (starting at parameter 1 = 0, parameter 2 = 1, ...), the following parameter(s) a variable number of video ids.
 ```
 $.synchronizeVideos(masterVideoNumber, videoId1, videoId2, ... , videoIdN);
 ```
+
+Synchronize.js provides triggers to listen to and listeners to subscribe to.
+An event documentation can be found at "EVENTS.md" [7].
 Subscribe to Synchronize.js events, e.g.:
 ```
 $(document).on("sjs:allPlayersReady", function(event) {
@@ -81,7 +83,7 @@ $(document).on("sjs:allPlayersReady", function(event) {
 Example
 -------
 
-More detailed examples (plain HTML5 and video.js) can be found under "examples" after checking out this repository.
+More detailed examples (plain HTML5 and video.js) can be found under "release/examples" after checking out this repository.
 
 ### JavaScript:
 

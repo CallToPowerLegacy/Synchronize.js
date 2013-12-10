@@ -11,6 +11,10 @@ Version
 -------
 1.0.0
 
+Attention
+---------
+For the Synchronize.js-examples to work you have to download the videos and customize the index.html files.
+
 README
 ------
 https://github.com/CallToPower/Synchronize.js/blob/master/README.md
