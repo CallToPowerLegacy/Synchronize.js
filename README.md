@@ -37,9 +37,9 @@ Fully supported (and successfully tested):
 - Opera
 	- 15-18 `W, M`
 
-Not supported (and unsuccessfully tested):
-- Internet Explorer (crashes on page-load on a page with more than one video)
-	- 10 `W`
+
+Not fully supported:
+- Internet Explorer (crashes with video.js videos on page-load -- plain HTML5 works fine!)
 	- 11 `W`
 - Opera (videos lag)
 	- 12 `W, M, L`
