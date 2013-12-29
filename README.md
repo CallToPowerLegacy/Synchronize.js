@@ -64,13 +64,14 @@ Usage
 
 To synchronize multiple videos you have to do one function call:
 The first parameter is the number of the master video number (starting at parameter 1 = 0, parameter 2 = 1, ...), the following parameter(s) varies (vary):
+
 1. The second parameter is a mediagroup ID:
 ```
 $.synchronizeVideos(masterVideoNumber, mediagroup);
 ```
 Note: To use mediagroups there has to be just 2 parameters.
 
-2. The following parameter(s) is (are) video ID(s):
+2. The following parameter(s) is a (are) video ID(s):
 ```
 $.synchronizeVideos(masterVideoNumber, videoId1, videoId2, ... , videoIdN);
 ```
@@ -107,6 +108,7 @@ $(document).ready(function() {
 	});
 	
 	// set videoId1 (parameter 1 = 0) as master
+	
 	// 1. Synchronize via mediagroup
 	$.synchronizeVideos(0, "mg1");
 	
