@@ -24,8 +24,9 @@ function log() {
 (function ($) {
 	videojs.options.flash.swf = "swf/video-js.swf";
 	videoId1 = "example_video_1";
-	videoId2 = "example_video_2";
-	videoId3 = "example_video_3";
+	// videoId2 = "example_video_2";
+	// videoId3 = "example_video_3";
+	mediagroupId = "videoMG1";
 
 	$(document).ready(function () {
 		$(document).on("sjs:allPlayersReady", function(event) {
@@ -53,7 +54,8 @@ function log() {
 			$("#currentTime").html(param);
 		});
 
-		$.synchronizeVideos(0, videoId1, videoId2, videoId3);
+		// $.synchronizeVideos(0, videoId1, videoId2, videoId3);
+		$.synchronizeVideos(0, mediagroupId);
 
 		videojs(videoId1).ready(function () {
 			videojs("example_video_1").thumbnails({

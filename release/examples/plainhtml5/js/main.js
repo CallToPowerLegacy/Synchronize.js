@@ -22,9 +22,10 @@ function log() {
 }
 
 (function ($) {
-	videoId1 = "example_video_1";
-	videoId2 = "example_video_2";
-	videoId3 = "example_video_3";
+	// videoId1 = "example_video_1";
+	// videoId2 = "example_video_2";
+	// videoId3 = "example_video_3";
+	mediagroupId = "videoMG1";
 
 	$(document).ready(function () {
 		$(document).on("sjs:allPlayersReady", function(event) {
@@ -43,6 +44,7 @@ function log() {
 			$("#currentTime").html(param);
 		});
 
-		$.synchronizeVideos(0, videoId1, videoId2, videoId3);
+		// $.synchronizeVideos(0, videoId1, videoId2, videoId3);
+		$.synchronizeVideos(0, mediagroupId);
 	});
 })(jQuery);

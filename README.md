@@ -14,7 +14,7 @@ Copyright 2013 Denis Meyer (for more information visit [3])
 
 Version
 -------
-1.0.0
+1.1.0
 
 Screenshot
 ----------
@@ -63,7 +63,14 @@ Usage
 -----
 
 To synchronize multiple videos you have to do one function call:
-The first parameter is the number of the master video number (starting at parameter 1 = 0, parameter 2 = 1, ...), the following parameter(s) a variable number of video ids.
+The first parameter is the number of the master video number (starting at parameter 1 = 0, parameter 2 = 1, ...), the following parameter(s) varies (vary):
+1. The second parameter is a mediagroup ID:
+```
+$.synchronizeVideos(masterVideoNumber, mediagroup);
+```
+Note: To use mediagroups there has to be just 2 parameters.
+
+2. The following parameter(s) is (are) video ID(s):
 ```
 $.synchronizeVideos(masterVideoNumber, videoId1, videoId2, ... , videoIdN);
 ```
@@ -100,6 +107,10 @@ $(document).ready(function() {
 	});
 	
 	// set videoId1 (parameter 1 = 0) as master
+	// 1. Synchronize via mediagroup
+	$.synchronizeVideos(0, "mg1");
+	
+	// 2. Synchronize via IDs
 	$.synchronizeVideos(0, "example_video_1", "example_video_2", "example_video_3");
 }
 ```
@@ -107,17 +118,17 @@ $(document).ready(function() {
 ### HTML:
 
 ```
-<video id="example_video_1" controls width="640" height="264">
+<video id="example_video_1" controls width="640" height="264" mediagroup="mg1">
 	<source src="videos/video_1.mp4" type='video/mp4' />
 	<source src="videos/video_1.webm" type='video/webm' />
 	<source src="videos/video_1.ogv" type='video/ogg' />
 </video>
-<video id="example_video_2" controls width="640" height="264">
+<video id="example_video_2" controls width="640" height="264" mediagroup="mg1">
 	<source src="videos/video_2.mp4" type='video/mp4' />
 	<source src="videos/video_2.webm" type='video/webm' />
 	<source src="videos/video_2.ogv" type='video/ogg' />
 </video>
-<video id="example_video_3" controls width="640" height="264">
+<video id="example_video_3" controls width="640" height="264" mediagroup="mg1">
 	<source src="videos/video_3.mp4" type='video/mp4' />
 	<source src="videos/video_3.webm" type='video/webm' />
 	<source src="videos/video_3.ogv" type='video/ogg' />

@@ -9,7 +9,7 @@ Copyright 2013 Denis Meyer (for more information visit http://choosealicense.com
 
 Version
 -------
-1.0.0
+1.1.0
 
 Attention
 ---------
