@@ -1,0 +1,12 @@
+Synchronize.js - Changelog
+==========================
+
+Version 1.1.0
+-------------
+- mediagroup support
+
+Version 1.0.0
+-------------
+- initial release
+- plain html5 support
+- video.js support
