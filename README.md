@@ -5,7 +5,7 @@ A library for synchronizing multiple HTML5 video elements.
 Implemented as a jQuery [1] plugin.
 Works with plain HTML5 video elements and with video.js [2] when video.js has been detected.
 
-Copyright 2013 Denis Meyer (for more information visit [3])
+Copyright 2013-2014 Denis Meyer (for more information visit [3])
 
 ---
 [1] http://jquery.com,
@@ -14,7 +14,7 @@ Copyright 2013 Denis Meyer (for more information visit [3])
 
 Version
 -------
-1.1.0
+1.1.1
 
 Screenshot
 ----------
@@ -27,28 +27,43 @@ Fully supported (and successfully tested):
 
 - Firefox
 	- 25 `W, M, L`
+	- 25-30 `M`
 - Safari
 	- 7 `M`
 - Google Chrome
-	- 27-31 `W, M`
+	- 27-31 `W`
+	- 27-35 `M`
 - Chromium
 	- 27 `L`
-	- 27-33 `M`
+	- 27-36 `M`
 - Opera
 	- 15-18 `W, M`
 
 
+Not tested (yet):
+
+- Firefox
+	- 26+ `W, L`
+- Google Chrome
+	- 32+ `W`
+- Chromium
+	- 28+ `L`
+- Opera
+	- 19+ `W, M`
+
+
 Not fully supported:
+
 - Internet Explorer (crashes with video.js videos on page-load -- plain HTML5 works fine!)
 	- 11 `W`
 - Opera (videos lag)
 	- 12 `W, M, L`
 
 ---
-Operating systems tested on:
+Mentioned operating systems:
 `W`indows 7+,
 `M`ac OS X 10.6+,
-`L`inux (Ubuntu 12+, Fedora 18+)
+`L`inux (Ubuntu 12+, CentOS 5+)
 
 Attention
 ---------
@@ -62,8 +77,8 @@ Attention
 Usage
 -----
 
-To synchronize multiple videos you have to do one function call:
-The first parameter is the number of the master video number (starting at parameter 1 = 0, parameter 2 = 1, ...), the following parameter(s) varies (vary):
+To synchronize multiple videos you have to call one function:
+The first parameter is the number of the master video number (parameter 1 = 0, parameter 2 = 1, ...), the following parameter/s varies/vary:
 
 1. The second parameter is a mediagroup ID:
 ```

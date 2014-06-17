@@ -1,8 +1,8 @@
 /**
  * Synchronize.js
- * Version 1.1.0
+ * Version 1.1.1
  *
- * Copyright 2013 Denis Meyer
+ * Copyright 2013-2014 Denis Meyer
  */
 (function ($) {
     var videoIds = [];
@@ -18,6 +18,7 @@
 
     var startClicked = false;
 
+    var checkBuffer = true; // flag whether to check for the video buffers
     var bufferCheckerSet = false;
     var bufferChecker;
     var checkBufferInterval = 1000; // ms
@@ -25,6 +26,10 @@
     var ignoreNextPause = false;
     var hitPauseWhileBuffering = false;
     var bufferInterval = 1.5; // s
+
+    var tryToPlayWhenBuffering = true; // flag for trying to play after N seconds of buffering
+    var tryToPlayWhenBufferingTimer = null;
+    var tryToPlayWhenBufferingMS = 10000;
 
     /**
      * Checks whether a number is in an interval [lower, upper]
@@ -274,7 +279,7 @@
             masterPlayer.on("play", function () {
                 $(document).trigger("sjs:masterPlay", [getCurrentTime(masterVideoId)]);
                 hitPauseWhileBuffering = false;
-                if (!bufferCheckerSet) {
+                if (!bufferCheckerSet && checkBuffer) {
                     bufferCheckerSet = true;
                     setBufferChecker();
                 }
@@ -290,7 +295,7 @@
 
             masterPlayer.on("pause", function () {
                 $(document).trigger("sjs:masterPause", [getCurrentTime(masterVideoId)]);
-                hitPauseWhileBuffering = !ignoreNextPause && playWhenBuffered && true;
+                hitPauseWhileBuffering = !ignoreNextPause && playWhenBuffered;
                 ignoreNextPause = ignoreNextPause ? !ignoreNextPause : ignoreNextPause;
                 for (var i = 0; i < videoIds.length; ++i) {
                     if (videoIds[i] != masterVideoId) {
@@ -342,7 +347,7 @@
      * Checks every checkBufferInterval ms whether all videos have a buffer to continue playing.
      * If not:
      *   - player pauses automatically
-     *   - starts automatically playing again when enough is buffered
+     *   - starts automatically playing when enough has been buffered
      */
     function setBufferChecker() {
         bufferChecker = window.setInterval(function () {
@@ -468,6 +473,13 @@
         startClicked = false;
     }
 
+    function stopTryToPlayWhenBufferingTimer() {
+        if (tryToPlayWhenBufferingTimer != null) {
+            window.clearInterval(tryToPlayWhenBufferingTimer);
+            tryToPlayWhenBufferingTimer = null;
+        }
+    }
+
     /**
      * @param masterVidNumber [0, n-1]
      * @param videoId1OrMediagroup
@@ -564,6 +576,22 @@
             }
         } else {
             $(document).trigger("sjs:notEnoughVideos", []);
+        }
+
+        if (tryToPlayWhenBuffering) {
+            $(document).on("sjs:buffering", function (e) {
+                tryToPlayWhenBufferingTimer = setInterval(function () {
+                    if (allVideoIdsInitialized() && !hitPauseWhileBuffering) {
+                        play(masterVideoId);
+                    }
+                }, tryToPlayWhenBufferingMS);
+            });
+            $(document).on("sjs:bufferedAndAutoplaying", function (e) {
+                stopTryToPlayWhenBufferingTimer();
+            });
+            $(document).on("sjs:bufferedButNotAutoplaying", function (e) {
+                stopTryToPlayWhenBufferingTimer();
+            });
         }
 
         $(document).on("sjs:play", function (e) {

@@ -1,6 +1,11 @@
 Synchronize.js - Changelog
 ==========================
 
+Version 1.1.1
+-------------
+- added an option that tries to play the video after N seconds of buffering [default switched on]
+- added an option to switch off the buffer checker completely
+
 Version 1.1.0
 -------------
 - mediagroup support

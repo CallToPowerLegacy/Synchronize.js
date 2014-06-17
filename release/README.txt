@@ -5,11 +5,11 @@ A library for synchronizing multiple HTML5 video elements.
 Implemented as a jQuery plugin.
 Works with plain HTML5 video elements and with video.js when video.js has been detected.
 
-Copyright 2013 Denis Meyer (for more information visit http://choosealicense.com/licenses [No License])
+Copyright 2013-2014 Denis Meyer (for more information visit http://choosealicense.com/licenses [No License])
 
 Version
 -------
-1.1.0
+1.1.1
 
 Attention
 ---------
