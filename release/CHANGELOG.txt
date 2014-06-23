@@ -1,6 +1,10 @@
 Synchronize.js - Changelog
 ==========================
 
+Version 1.1.2
+-------------
+- checking for the event "dataloaded" (not thrown everytime). When not thrown after N seconds, continue anyway
+
 Version 1.1.1
 -------------
 - added an option that tries to play the video after N seconds of buffering [default switched on]
