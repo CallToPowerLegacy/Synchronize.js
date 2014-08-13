@@ -1,6 +1,10 @@
 Synchronize.js - Changelog
 ==========================
 
+Version 1.1.3
+-------------
+- small bug fixes
+
 Version 1.1.2
 -------------
 - checking for the event "dataloaded" (not thrown everytime). When not thrown after N seconds, continue anyway
