@@ -1,10 +1,10 @@
 /**
  * Synchronize.js
- * Version 1.1.2
+ * Version 1.1.3
  *
  * Copyright 2013-2014 Denis Meyer
  */
-(function ($) {
+(function($) {
     var videoIds = [];
     var videoIdsReady = {};
     var videoIdsInit = {};
@@ -104,7 +104,8 @@
      */
     function getVideoId(videojsVideo) {
         if (useVideoJs() && videojsVideo) {
-            return videojsVideo.Q;
+            var id = videojsVideo.Q ? videojsVideo.Q : videojsVideo.U;
+            return id;
         } else {
             return videojsVideo;
         }
@@ -280,7 +281,7 @@
         if (allVideoIdsInitialized()) {
             var masterPlayer = getVideoObj(masterVideoId);
 
-            masterPlayer.on("play", function () {
+            masterPlayer.on("play", function() {
                 $(document).trigger("sjs:masterPlay", [getCurrentTime(masterVideoId)]);
                 hitPauseWhileBuffering = false;
                 if (!bufferCheckerSet && checkBuffer) {
@@ -289,7 +290,7 @@
                 }
                 for (var i = 0; i < videoIds.length; ++i) {
                     if (videoIds[i] != masterVideoId) {
-                        getVideoObj(videoIds[i]).on("play", function () {
+                        getVideoObj(videoIds[i]).on("play", function() {
                             mute(videoIds[i]);
                         });
                         play(videoIds[i]);
@@ -297,7 +298,7 @@
                 }
             });
 
-            masterPlayer.on("pause", function () {
+            masterPlayer.on("pause", function() {
                 $(document).trigger("sjs:masterPause", [getCurrentTime(masterVideoId)]);
                 hitPauseWhileBuffering = !ignoreNextPause && playWhenBuffered;
                 ignoreNextPause = ignoreNextPause ? !ignoreNextPause : ignoreNextPause;
@@ -309,7 +310,7 @@
                 }
             });
 
-            masterPlayer.on("ended", function () {
+            masterPlayer.on("ended", function() {
                 $(document).trigger("sjs:masterEnded", [getDuration(masterVideoId)]);
                 hitPauseWhileBuffering = true;
                 for (var i = 0; i < videoIds.length; ++i) {
@@ -320,7 +321,7 @@
                 }
             });
 
-            masterPlayer.on("timeupdate", function () {
+            masterPlayer.on("timeupdate", function() {
                 $(document).trigger("sjs:masterTimeupdate", [getCurrentTime(masterVideoId)]);
                 hitPauseWhileBuffering = true;
                 var now = Date.now();
@@ -354,7 +355,7 @@
      *   - starts automatically playing when enough has been buffered
      */
     function setBufferChecker() {
-        bufferChecker = window.setInterval(function () {
+        bufferChecker = window.setInterval(function() {
             var allBuffered = true;
 
             var currTime = getCurrentTime(masterVideoId);
@@ -416,10 +417,12 @@
      * @param func function to call after data has been loaded
      */
     function doWhenDataLoaded(id, func) {
-        if (id && func) {
-            getVideoObj(id).on("loadeddata", function () {
+        if (id != "") {
+            getVideoObj(id).on("loadeddata", function() {
                 receivedEventLoadeddata = true;
-                func();
+                if (func) {
+                    func();
+                }
             });
         }
     }
@@ -491,7 +494,7 @@
      * @param videoId2
      * @param videoId3 - videoIdN [optional]
      */
-    $.synchronizeVideos = function (playerMasterVidNumber, videoId1OrMediagroup, videoId2) {
+    $.synchronizeVideos = function(playerMasterVidNumber, videoId1OrMediagroup, videoId2) {
         var validIds = true;
 
         // check for mediagroups
@@ -530,7 +533,7 @@
                     getVideoObj(videoIds[i]).on("play", initialPlay);
                     getVideoObj(videoIds[i]).on("pause", initialPause);
 
-                    getVideoObj(videoIds[i]).ready(function () {
+                    getVideoObj(videoIds[i]).ready(function() {
                         ++nrOfPlayersReady;
 
                         if (allVideoIdsInitialized()) {
@@ -546,6 +549,17 @@
                             $(document).trigger("sjs:allPlayersReady", []);
                         }
                     });
+
+                    receivedEventLoadeddata_interval = window.setInterval(function() {
+                        if (!receivedEventLoadeddata) {
+                            for (var i = 0; i < videoIds.length; ++i) {
+                                getVideoObj(videoIds[i]).trigger("loadeddata");
+                            }
+                        } else {
+                            window.clearInterval(receivedEventLoadeddata_interval);
+                            receivedEventLoadeddata_interval = null;
+                        }
+                    }, receivedEventLoadeddata_waitTimeout);
                 }
             } else {
                 for (var i = 0; i < videoIds.length; ++i) {
@@ -554,11 +568,11 @@
 
                     getVideoObj(videoIds[i]).on("play", initialPlay);
                     getVideoObj(videoIds[i]).on("pause", initialPause);
-                    getVideoObj(videoIds[i]).ready(function () {
+                    getVideoObj(videoIds[i]).ready(function() {
                         var playerName = getVideoId(this);
 
                         videoIdsReady[playerName] = true;
-                        doWhenDataLoaded(playerName, function () {
+                        doWhenDataLoaded(playerName, function() {
                             videoIdsInit[playerName] = true;
 
                             $(document).trigger("sjs:playerLoaded", [playerName]);
@@ -576,68 +590,68 @@
                                 $(document).trigger("sjs:allPlayersReady", []);
                             }
                         });
+
+                        receivedEventLoadeddata_interval = window.setInterval(function() {
+                            if (!receivedEventLoadeddata) {
+                                for (var i = 0; i < videoIds.length; ++i) {
+                                    getVideoObj(videoIds[i]).trigger("loadeddata");
+                                }
+                            } else {
+                                window.clearInterval(receivedEventLoadeddata_interval);
+                                receivedEventLoadeddata_interval = null;
+                            }
+                        }, receivedEventLoadeddata_waitTimeout);
                     });
                 }
             }
-
-            receivedEventLoadeddata_interval = window.setInterval(function () {
-                if (!receivedEventLoadeddata) {
-                    for (var i = 0; i < videoIds.length; ++i) {
-                        getVideoObj(videoIds[i]).trigger("loadeddata");
-                    }
-                } else {
-                    window.clearInterval(receivedEventLoadeddata_interval);
-                    receivedEventLoadeddata_interval = null;
-                }
-            }, receivedEventLoadeddata_waitTimeout);
         } else {
             $(document).trigger("sjs:notEnoughVideos", []);
         }
 
         if (tryToPlayWhenBuffering) {
-            $(document).on("sjs:buffering", function (e) {
-                tryToPlayWhenBufferingTimer = setInterval(function () {
+            $(document).on("sjs:buffering", function(e) {
+                tryToPlayWhenBufferingTimer = setInterval(function() {
                     if (allVideoIdsInitialized() && !hitPauseWhileBuffering) {
                         play(masterVideoId);
                     }
                 }, tryToPlayWhenBufferingMS);
             });
-            $(document).on("sjs:bufferedAndAutoplaying", function (e) {
+            $(document).on("sjs:bufferedAndAutoplaying", function(e) {
                 stopTryToPlayWhenBufferingTimer();
             });
-            $(document).on("sjs:bufferedButNotAutoplaying", function (e) {
+            $(document).on("sjs:bufferedButNotAutoplaying", function(e) {
                 stopTryToPlayWhenBufferingTimer();
             });
         }
 
-        $(document).on("sjs:play", function (e) {
+        $(document).on("sjs:play", function(e) {
             if (allVideoIdsInitialized()) {
                 play(masterVideoId);
             }
         });
-        $(document).on("sjs:pause", function (e) {
+        $(document).on("sjs:pause", function(e) {
             if (allVideoIdsInitialized()) {
                 pause(masterVideoId);
             }
         });
-        $(document).on("sjs:setCurrentTime", function (e, time) {
+        $(document).on("sjs:setCurrentTime", function(e, time) {
             if (allVideoIdsInitialized()) {
                 setCurrentTime(masterVideoId, time);
             }
         });
-        $(document).on("sjs:synchronize", function (e) {
+        $(document).on("sjs:synchronize", function(e) {
             if (allVideoIdsInitialized()) {
                 synchronize();
             }
         });
-        $(document).on("sjs:startBufferChecker", function (e) {
+        $(document).on("sjs:startBufferChecker", function(e) {
             if (!bufferCheckerSet) {
                 window.clearInterval(bufferChecker);
                 bufferCheckerSet = true;
                 setBufferChecker();
             }
         });
-        $(document).on("sjs:stopBufferChecker", function (e) {
+        $(document).on("sjs:stopBufferChecker", function(e) {
             window.clearInterval(bufferChecker);
             bufferCheckerSet = false;
         });
