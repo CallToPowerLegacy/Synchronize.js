@@ -100,6 +100,13 @@ Synchronize.js - Events
 
 ## Listener
 
+#### `sjs:debug`
+- Parameters
+	- debug
+		- true to print debug output to the console, false else
+- Description
+	- Sets the debug flag
+
 #### `sjs:play`
 - Parameters
 	- /

@@ -6,6 +6,7 @@ Version 1.2.0
 - checking whether using HTML5 or flash
 - adjust playback rate to synchronize the videos if possible; in favor of seeking (contributed by rrolf)
 - more precise synchronization
+- added a new event "sjs:debug" to control the debug output
 - misc bug fixes
 
 Version 1.1.3
