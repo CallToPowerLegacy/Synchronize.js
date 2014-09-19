@@ -14,7 +14,7 @@ Copyright 2013-2014 Denis Meyer (for more information visit [3])
 
 Version
 -------
-1.1.3
+1.2.0
 
 Screenshot
 ----------
@@ -28,8 +28,6 @@ Fully supported (and successfully tested):
 - Firefox
 	- 25 `W, M, L`
 	- 25-30 `M`
-- Safari
-	- 7 `M`
 - Google Chrome
 	- 27-31 `W`
 	- 27-35 `M`
@@ -58,6 +56,8 @@ Not fully supported:
 	- 11 `W`
 - Opera (videos lag)
 	- 12 `W, M, L`
+- Safari
+	- 7 `M`
 
 ---
 Mentioned operating systems:
@@ -68,11 +68,17 @@ Mentioned operating systems:
 Attention
 ---------
 - Chrome/Chromium and Opera (15+) [4] only initialize all video displays properly when the video sources are different per video tag [5, 6]
+- for the Synchronize.js-examples to work you have to download the videos and customize the index.html files.
+- Safari is currently not fully supported
 
 ---
 [4] All browsers with the blink engine ( http://www.chromium.org/blink ),
 [5] see 'example/index_sameVideoSources.html',
 [6] Chromium bug tracker: https://code.google.com/p/chromium/issues/detail?id=326593
+
+TODO
+----
+Re-add Safari support.
 
 Usage
 -----

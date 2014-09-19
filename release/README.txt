@@ -9,11 +9,12 @@ Copyright 2013-2014 Denis Meyer (for more information visit http://choosealicens
 
 Version
 -------
-1.1.3
+1.2.0
 
 Attention
 ---------
-For the Synchronize.js-examples to work you have to download the videos and customize the index.html files.
+- for the Synchronize.js-examples to work you have to download the videos and customize the index.html files.
+- Safari is currently not fully supported
 
 README
 ------
