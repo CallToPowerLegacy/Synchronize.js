@@ -5,12 +5,12 @@ A library for synchronizing multiple HTML5 video elements.
 Implemented as a jQuery [1] plugin.
 Works with plain HTML5 video elements and with video.js [2] when video.js has been detected.
 
-Copyright 2013-2014 Denis Meyer (for more information visit [3])
+Copyright 2013-2014 Denis Meyer [3]
 
 ---
 [1] http://jquery.com,
 [2] http://www.videojs.com,
-[3] http://choosealicense.com/licenses [No License]
+[3] GNU GPL v2.0, for more information see file LICENSE
 
 Version
 -------
@@ -127,12 +127,12 @@ $(document).ready(function() {
 	$(document).on("sjs:allPlayersReady", function(event) {
 		// All players have been successfully initialized - do something!
 	});
-	
+
 	// set videoId1 (parameter 1 = 0) as master
-	
+
 	// 1. Synchronize via mediagroup
 	$.synchronizeVideos(0, "mg1");
-	
+
 	// 2. Synchronize via IDs
 	$.synchronizeVideos(0, "example_video_1", "example_video_2", "example_video_3");
 }
