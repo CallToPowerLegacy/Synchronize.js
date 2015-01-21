@@ -1,18 +1,18 @@
 /**
  * Synchronize.js
- * Version 1.2.0
+ * Version 1.2.1
  *
- *  Copyright (C) 2014 Denis Meyer, calltopower88@googlemail.com
+ *  Copyright (C) 2013-2015 Denis Meyer, calltopower88@googlemail.com
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version.
- *  
+ *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
- *  
+ *
  *  You should have received a copy of the GNU General Public License along
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -39,7 +39,8 @@
 
     // seek ahead for synchronized displays, as the master continues to play
     // while the slave is seeking
-    var seekAhead = 0.5; // s
+    var seekAhead = 0.25; // s
+    var pauseDelayThreshold = seekAhead + 0.05;
 
     var synchDelayThreshold = 0.0;
 
@@ -366,50 +367,71 @@
      * Synchronizes all slaves with the master
      */
     function synchronize() {
+        // for all video ids
         for (var i = 0; i < videoIds.length; ++i) {
+            // except the master video
             if (videoIds[i] != masterVideoId) {
-                var syncDelay = getSynchDelay(videoIds[i]);
-                if (Math.abs(syncDelay) > synchDelayThreshold) {
-                    $(document).trigger("sjs:synchronizing", [getCurrentTime(masterVideoId), videoIds[i]]);
-                    var doSeek = false;
-                    if (!usingFlash) {
-                        log("SJS: [synchronize] Synchronizing video element id '" + videoIds[i] + "', delay = " + syncDelay);
-                        if (syncDelay > synchDelayThreshold) {
-                            if (getPlaybackRate(masterVideoId) != getPlaybackRate(videoIds[i])) {
-                                setPlaybackRate(videoIds[i], getPlaybackRate(masterVideoId));
-                                if (!isPaused(masterVideoId) && !waitingForSync[videoIds[i]]) {
-                                    play(videoIds[i]);
-                                    log("SJS: [synchronize] Restarting video element id '" + videoIds[i] + "' as it paused unexpectedly");
-                                }
-                            }
-                            if (syncDelay < maxGap) {
-                                syncPause(videoIds[i], syncDelay);
-                            } else {
-                                doSeek = true;
-                            }
-                        } else if (syncDelay < synchDelayThreshold) {
-                            if (Math.abs(syncDelay) < maxGap) {
-                                log("SJS: [synchronize] Synchronizing. Increased playback speed of video element id '" + videoIds[i] + "' to " + (getPlaybackRate(videoIds[i])));
-                                setPlaybackRate(videoIds[i], (getPlaybackRate(masterVideoId) + 0.5)); // play slave video faster to catch up to the master
-                            } else {
-                                doSeek = true;
-                            }
+                var doSeek = false;
+                var synchDelay = getSynchDelay(videoIds[i]);
+                // if not using flash
+                if (!usingFlash) {
+                    if (synchDelay > synchDelayThreshold) {
+                        if (synchDelay < maxGap) {
+                            $(document).trigger("sjs:synchronizing", [getCurrentTime(masterVideoId), videoIds[i]]);
+                            // set a slower playback rate for the video to let the master video catch up
+                            log("SJS: [synchronize] Decreasing playback rate of video element id '" + videoIds[i] + "' from " + getPlaybackRate(videoIds[i]) + " to " + (getPlaybackRate(masterVideoId) - 0.5));
+                            setPlaybackRate(videoIds[i], (getPlaybackRate(masterVideoId) - 0.5));
+                        } else {
+                            $(document).trigger("sjs:synchronizing", [getCurrentTime(masterVideoId), videoIds[i]]);
+                            // set playback rate back to normal
+                            setPlaybackRate(videoIds[i], getPlaybackRate(masterVideoId));
+                            // pause video shortly
+                            pause(videoIds[i]);
                         }
-                    } else {
+                    } else if (synchDelay < synchDelayThreshold) {
+                        if (synchDelay < maxGap) {
+                            $(document).trigger("sjs:synchronizing", [getCurrentTime(masterVideoId), videoIds[i]]);
+                            // set a faster playback rate for the video to catch up to the master video
+                            log("SJS: [synchronize] Increasing playback rate of video element id '" + videoIds[i] + "' from " + getPlaybackRate(videoIds[i]) + " to " + (getPlaybackRate(masterVideoId) + 0.5));
+                            setPlaybackRate(videoIds[i], (getPlaybackRate(masterVideoId) + 0.5));
+                        } else {
+                            // set playback rate back to normal
+                            setPlaybackRate(videoIds[i], getPlaybackRate(masterVideoId));
+                            // mark for seeking
+                            doSeek = true;
+                        }
+                    }
+                    // everything is fine
+                    else if (!isPaused(masterVideoId) && !waitingForSync[videoIds[i]]) {
+                        // play the video
+                        log("SJS: [synchronize] Playing video element id '" + videoIds[i] + "'");
+                        play(videoIds[i]);
+                    }
+                }
+                // if using flash
+                else if (usingFlash) {
+                    if ((Math.abs(synchDelay) > synchDelayThreshold) && (Math.abs(synchDelay) > pauseDelayThreshold)) {
                         doSeek = true;
                     }
-                    if (doSeek) {
-                        log("SJS: Synchronizing. Seeking: " + (getCurrentTime(masterVideoId) + seekAhead));
-                        if (!setCurrentTime(videoIds[i], getCurrentTime(masterVideoId) + seekAhead)) {
-                            // pause(videoIds[i]);
+                    // everything is fine
+                    else if (!isPaused(masterVideoId) && !waitingForSync[videoIds[i]]) {
+                        // play the video
+                        log("SJS: [synchronize] Playing video element id '" + videoIds[i] + "'");
+                        play(videoIds[i]);
+                    }
+                }
+                // if marked for seeking
+                if (doSeek) {
+                    $(document).trigger("sjs:synchronizing", [getCurrentTime(masterVideoId), videoIds[i]]);
+                    log("SJS: [synchronize] Seeking video element id '" + videoIds[i] + "': " + (getCurrentTime(masterVideoId) + seekAhead));
+                    if (setCurrentTime(videoIds[i], getCurrentTime(masterVideoId) + seekAhead)) {
+                        play(videoIds[i]);
+                        if (!isPaused(masterVideoId) && !waitingForSync[videoIds[i]]) {
+                            log("SJS: [synchronize] Playing video element id '" + videoIds[i] + "' after seeking");
+                            play(videoIds[i]);
                         } else {
-                            if (!isPaused(masterVideoId)) {
-                                log("SJS: [synchronize] Playing video element id '" + videoIds[i] + "' after seeking");
-                                play(videoIds[i]);
-                            } else {
-                                log("SJS: [synchronize] Pausing video element id '" + videoIds[i] + "' after seeking, as the master video is paused, too");
-                                pause(videoIds[i]);
-                            }
+                            log("SJS: [synchronize] Pausing video element id '" + videoIds[i] + "' after seeking");
+                            pause(videoIds[i]);
                         }
                     }
                 }

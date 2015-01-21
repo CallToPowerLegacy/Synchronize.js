@@ -5,7 +5,7 @@ A library for synchronizing multiple HTML5 video elements.
 Implemented as a jQuery [1] plugin.
 Works with plain HTML5 video elements and with video.js [2] when video.js has been detected.
 
-Copyright 2013-2014 Denis Meyer [3]
+Copyright 2013-2015 Denis Meyer [3]
 
 ---
 [1] http://jquery.com,
@@ -14,7 +14,7 @@ Copyright 2013-2014 Denis Meyer [3]
 
 Version
 -------
-1.2.0
+1.2.1
 
 Screenshot
 ----------
@@ -26,28 +26,30 @@ Browser support
 Fully supported (and successfully tested):
 
 - Firefox
-	- 25 `W, M, L`
-	- 25-30 `M`
+	- 25 `W, L`
+	- 25-35 `M`
 - Google Chrome
 	- 27-31 `W`
-	- 27-35 `M`
+	- 27-39 `M`
 - Chromium
 	- 27 `L`
 	- 27-36 `M`
 - Opera
-	- 15-18 `W, M`
+	- 15-18 `W`
+	- 15-26 `M`
 
 
 Not tested (yet):
 
 - Firefox
 	- 26+ `W, L`
-- Google Chrome
-	- 32+ `W`
 - Chromium
 	- 28+ `L`
 - Opera
-	- 19+ `W, M`
+	- 19+ `W`
+	- `L`
+- Safari
+	- 7+ `M`
 
 
 Not fully supported:
@@ -56,8 +58,6 @@ Not fully supported:
 	- 11 `W`
 - Opera (videos lag)
 	- 12 `W, M, L`
-- Safari
-	- 7 `M`
 
 ---
 Mentioned operating systems:

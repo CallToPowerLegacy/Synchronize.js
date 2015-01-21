@@ -1,6 +1,10 @@
 Synchronize.js - Changelog
 ==========================
 
+Version 1.2.1
+-------------
+- improved synchronize function
+
 Version 1.2.0
 -------------
 - checking whether using HTML5 or flash
