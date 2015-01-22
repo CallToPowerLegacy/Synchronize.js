@@ -68,6 +68,7 @@ function log() {
 		});
 
 		// $.synchronizeVideos(0, videoId1, videoId2, videoId3);
+        $(document).trigger("sjs:debug", loggingEnabled);
 		$.synchronizeVideos(0, mediagroupId);
 
 		videojs(videoId1).ready(function () {
