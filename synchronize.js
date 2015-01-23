@@ -35,6 +35,7 @@
     var pauseDelayThreshold = seekAhead + 0.05;
     var synchDelayThresholdPositive = 0.05;
     var synchDelayThresholdNegative = -0.05;
+    var synchDelayThresholdFlash = 0.05;
 
     /* don't change the variables below */
     var debug = false; // set this via event "sjs:debug"
@@ -403,7 +404,7 @@
                 }
                 // if using flash
                 else if (usingFlash) {
-                    if ((Math.abs(synchDelay) > synchDelayThreshold) && (Math.abs(synchDelay) > pauseDelayThreshold)) {
+                    if ((Math.abs(synchDelay) > synchDelayThresholdFlash) && (Math.abs(synchDelay) > pauseDelayThreshold)) {
                         doSeek = true;
                     }
                     // everything is fine
