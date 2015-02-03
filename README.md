@@ -69,7 +69,7 @@ Attention
 ---------
 - Chrome/Chromium and Opera (15+) [4] only initialize all video displays properly when the video sources are different per video tag [5, 6]
 - for the Synchronize.js-examples to work you have to download the videos and customize the index.html files.
-- Safari is currently not fully supported
+- the buffer checker is currently not working in Chrome, please trigger the event "sjs:stopBufferChecker" when Chrome has been detected
 
 ---
 [4] All browsers with the blink engine ( http://www.chromium.org/blink ),

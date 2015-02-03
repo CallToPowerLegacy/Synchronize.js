@@ -1,4 +1,4 @@
 Synchronize.js - TODO
 =====================
 
-- Improve buffer handlers
+- improve buffer handlers (not working in Chrome right now)

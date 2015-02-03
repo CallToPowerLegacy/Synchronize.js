@@ -1,6 +1,11 @@
 Synchronize.js - Changelog
 ==========================
 
+Version 1.2.2
+-------------
+- added a Chrome buffer checker warning
+- checking whether a video is currently buffering when trying to play
+
 Version 1.2.1
 -------------
 - improved synchronize function

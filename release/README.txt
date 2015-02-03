@@ -13,7 +13,9 @@ Version
 
 Attention
 ---------
+- Chrome/Chromium and Opera (15+) only initialize all video displays properly when the video sources are different per video tag
 - for the Synchronize.js-examples to work you have to download the videos and customize the index.html files.
+- the buffer checker is currently not working in Chrome, please trigger the event "sjs:stopBufferChecker" when Chrome has been detected
 
 README
 ------
