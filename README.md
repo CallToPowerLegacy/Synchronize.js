@@ -10,11 +10,11 @@ Copyright 2013-2015 Denis Meyer [3]
 ---
 [1] http://jquery.com,
 [2] http://www.videojs.com,
-[3] GNU GPL v2.0, for more information see file LICENSE
+[3] GNU LGPL v2 or v3
 
 Version
 -------
-1.2.1
+1.2.2
 
 Screenshot
 ----------
