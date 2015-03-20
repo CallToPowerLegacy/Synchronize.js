@@ -60,7 +60,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    "Build/synchronize-min.js": ["src/synchronize.js"]
+                    "Build/src/synchronize-min.js": ["src/synchronize.js"]
                 }
             }
         },
@@ -77,14 +77,14 @@ module.exports = function(grunt) {
                     expand: true,
                     flatten: true,
                     src: ["src/synchronize.js"],
-                    dest: "Build"
+                    dest: "Build/src"
                 }]
             },
             synchronizeMin: {
                 files: [{
                     expand: true,
                     flatten: true,
-                    src: ["Build/synchronize-min.js"],
+                    src: ["Build/src/synchronize-min.js"],
                     dest: "src"
                 }]
             },
@@ -92,7 +92,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     flatten: true,
-                    src: ["Build/synchronize-min.js"],
+                    src: ["Build/src/synchronize-min.js"],
                     dest: "Build/examples/plainhtml5/js"
                 }]
             },
@@ -100,7 +100,7 @@ module.exports = function(grunt) {
                 files: [{
                     expand: true,
                     flatten: true,
-                    src: ["Build/synchronize-min.js"],
+                    src: ["Build/src/synchronize-min.js"],
                     dest: "Build/examples/videojs/js"
                 }]
             },
