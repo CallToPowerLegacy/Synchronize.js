@@ -17,6 +17,7 @@
  *  with this program; if not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
+/* jshint -W083 */
 (function($) {
     var checkBuffer = true; // flag whether to check for the video buffers
     var checkBufferInterval = 1000; // ms
@@ -125,7 +126,7 @@
      * @return true when video.js is being used
      */
     function useVideoJs() {
-        return !(typeof videojs === "undefined");
+        return (typeof videojs !== "undefined");
     }
 
     /**
@@ -137,7 +138,7 @@
     function getVideoId(videojsVideo) {
         if (useVideoJs() && videojsVideo) {
             var id = videojsVideo.id();
-            return (id != "") ? id : videojsVideo;
+            return (id !== '') ? id : videojsVideo;
         } else {
             return videojsVideo;
         }
@@ -150,7 +151,7 @@
      * @return true if id is not undefined and video plays
      */
     function play(id) {
-        if(!isBuffering) {
+        if (!isBuffering) {
             if (id) {
                 log("SJS: [play] Playing video element id '" + id + "'");
                 getVideo(id).play();
@@ -160,8 +161,8 @@
                 return false;
             }
         } else {
-                log("SJS: [play] A video is currently buffering");
-                return false;
+            log("SJS: [play] A video is currently buffering");
+            return false;
         }
     }
 
@@ -467,7 +468,7 @@
         if (allVideoIdsInitialized()) {
             var masterPlayer = getVideoObj(masterVideoId);
 
-            usingFlash = $("#" + masterVideoId + "_flash_api").length != 0;
+            usingFlash = $("#" + masterVideoId + "_flash_api").length !== 0;
 
             masterPlayer.on("play", function() {
                 log("SJS: Master received 'play' event");
@@ -558,10 +559,11 @@
     function setBufferChecker() {
         bufferChecker = window.setInterval(function() {
             var allBuffered = true;
+            var i;
 
             var currTime = getCurrentTime(masterVideoId);
 
-            for (var i = 0; i < videoIds.length; ++i) {
+            for (i = 0; i < videoIds.length; ++i) {
                 var bufferedTimeRange = getBufferTimeRange(videoIds[i]);
                 if (bufferedTimeRange) {
                     var duration = getDuration(videoIds[i]);
@@ -584,7 +586,7 @@
             if (!allBuffered) {
                 playWhenBuffered = true;
                 ignoreNextPause = true;
-                for (var i = 0; i < videoIds.length; ++i) {
+                for (i = 0; i < videoIds.length; ++i) {
                     pause(videoIds[i]);
                 }
                 hitPauseWhileBuffering = false;
@@ -619,7 +621,7 @@
      * @param func function to call after data has been loaded
      */
     function doWhenDataLoaded(id, func) {
-        if (id != "") {
+        if (id !== '') {
             getVideoObj(id).on("loadeddata", function() {
                 receivedEventLoadeddata = true;
                 if (func) {
@@ -693,7 +695,7 @@
      * Stop try to play when buffering timer
      */
     function stopTryToPlayWhenBufferingTimer() {
-        if (tryToPlayWhenBufferingTimer != null) {
+        if (tryToPlayWhenBufferingTimer !== null) {
             window.clearInterval(tryToPlayWhenBufferingTimer);
             tryToPlayWhenBufferingTimer = null;
         }
@@ -709,11 +711,12 @@
      */
     $.synchronizeVideos = function(playerMasterVidNumber, videoId1OrMediagroup, videoId2) {
         var validIds = true;
+        var i;
 
         // check for mediagroups
         if ((arguments.length == 2)) {
             var videosInMediagroup = $("video[mediagroup=\"" + videoId1OrMediagroup + "\"]");
-            for (var i = 0; i < videosInMediagroup.length; ++i) {
+            for (i = 0; i < videosInMediagroup.length; ++i) {
                 var l = videoIds.length;
                 videoIds[l] = videosInMediagroup[i].getAttribute("id");
                 // hack for video.js: Remove added id string
@@ -724,7 +727,7 @@
             }
         } else {
             masterVidNumber = playerMasterVidNumber;
-            for (var i = 1; i < arguments.length; ++i) {
+            for (i = 1; i < arguments.length; ++i) {
                 // check whether ids exist/are valid
                 validIds = validIds && arguments[i] && ($("#" + arguments[i]).length);
                 if (!validIds) {
@@ -738,10 +741,11 @@
         }
 
         if (validIds && (videoIds.length > 1)) {
+            var plMVN;
             if (!useVideoJs()) {
-                for (var i = 0; i < videoIds.length; ++i) {
+                for (i = 0; i < videoIds.length; ++i) {
                     $(document).trigger("sjs:idRegistered", [videoIds[i]]);
-                    var plMVN = playerMasterVidNumber;
+                    plMVN = playerMasterVidNumber;
 
                     getVideoObj(videoIds[i]).on("play", initialPlay);
                     getVideoObj(videoIds[i]).on("pause", initialPause);
@@ -764,9 +768,9 @@
                     });
                 }
             } else {
-                for (var i = 0; i < videoIds.length; ++i) {
+                for (i = 0; i < videoIds.length; ++i) {
                     $(document).trigger("sjs:idRegistered", [videoIds[i]]);
-                    var plMVN = playerMasterVidNumber;
+                    plMVN = playerMasterVidNumber;
 
                     getVideoObj(videoIds[i]).on("play", initialPlay);
                     getVideoObj(videoIds[i]).on("pause", initialPause);
@@ -781,9 +785,9 @@
 
                             if (allVideoIdsInitialized()) {
                                 setMasterVideoId(plMVN);
-                                for (var i = 0; i < videoIds.length; ++i) {
-                                    getVideoObj(videoIds[i]).off("play", initialPlay);
-                                    getVideoObj(videoIds[i]).off("pause", initialPause);
+                                for (var j = 0; j < videoIds.length; ++j) {
+                                    getVideoObj(videoIds[j]).off("play", initialPlay);
+                                    getVideoObj(videoIds[j]).off("pause", initialPause);
                                 }
                                 registerEvents();
                                 if (startClicked) {
@@ -868,7 +872,7 @@
             bufferCheckerSet = false;
             isBuffering = false;
         });
-    }
+    };
     $(document).on("sjs:debug", function(e, _debug) {
         debug = _debug;
         log("SJS: Received 'sjs:debug' event");

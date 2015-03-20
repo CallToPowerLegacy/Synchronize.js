@@ -18,7 +18,12 @@ Version
 
 Screenshot
 ----------
-![Screenshot](release/screenshot.png "Screenshot")
+![Screenshot](examples/screenshot.png "Screenshot")
+
+Examples
+--------
+- Compile Synchronize before using the examples, use Build/examples after compiling
+- Download the videos and put it into Build/examples/TYPE/videos
 
 Browser support
 ---------------
