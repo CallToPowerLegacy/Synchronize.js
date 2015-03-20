@@ -23,7 +23,17 @@ Screenshot
 Examples
 --------
 - Compile Synchronize before using the examples, use Build/examples after compiling
-- Download the videos and put it into Build/examples/TYPE/videos
+- Download the videos and put them into Build/examples/TYPE/videos
+  - Downloads
+	  - https://vjs.zencdn.net/v/oceans.mp4
+	  - https://vjs.zencdn.net/v/oceans.webm
+	- Copies
+	  - examples/plainhtml5/videos/oceans-clip-1.mp4/.webm
+		- examples/plainhtml5/videos/oceans-clip-2.mp4/.webm
+		- examples/plainhtml5/videos/oceans-clip-3.mp4/.webm
+		- examples/videojs/videos/oceans-clip-1.mp4/.webm
+		- examples/videojs/videos/oceans-clip-2.mp4/.webm
+		- examples/videojs/videos/oceans-clip-3.mp4/.webm
 
 Browser support
 ---------------
