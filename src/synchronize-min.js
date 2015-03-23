@@ -1,6 +1,6 @@
 /**
  * Synchronize.js
- * Compiled on 20.03.2015
+ * Compiled on 23.03.2015
  * Version 1.2.2
  *
  *  Copyright (C) 2013-2015 Denis Meyer, calltopower88@googlemail.com
