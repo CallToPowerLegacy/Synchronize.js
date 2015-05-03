@@ -14,7 +14,7 @@ Copyright 2013-2015 Denis Meyer [3]
 
 Version
 -------
-1.2.2
+1.2.3
 
 Screenshot
 ----------
@@ -42,7 +42,7 @@ Fully supported (and successfully tested):
 
 - Firefox
 	- 25 `W, L`
-	- 25-35 `M`
+	- 25-37 `M`
 - Google Chrome
 	- 27-31 `W`
 	- 27-39 `M`
@@ -90,10 +90,6 @@ Attention
 [4] All browsers with the blink engine ( http://www.chromium.org/blink ),
 [5] see 'example/index_sameVideoSources.html',
 [6] Chromium bug tracker: https://code.google.com/p/chromium/issues/detail?id=326593
-
-TODO
-----
-Re-add Safari support.
 
 Usage
 -----

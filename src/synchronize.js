@@ -1,6 +1,6 @@
 /**
  * Synchronize.js
- * Version 1.2.2
+ * Version 1.2.3
  *
  *  Copyright (C) 2013-2015 Denis Meyer, calltopower88@googlemail.com
  *  This program is free software; you can redistribute it and/or modify
@@ -184,6 +184,45 @@
             log("SJS: [mute] Undefined video element id '" + id + "'");
             return undefined;
         }
+    }
+
+    /**
+     * Unmute the video
+     *
+     * @param id video ID
+     * @param volume in [0.0 - 1.0]
+     * @return true if successfully unmuted, false else
+     */
+    function unmute(id, volume) {
+        if (id && volume) {
+            log("SJS: [unmute] Unmuting video element id '" + id + "'");
+            if (!useVideoJs()) {
+                getVideo(id).muted = false;
+                getVideo(id).volume(volume);
+            } else {
+                getVideo(id).volume(volume);
+            }
+            return true;
+        } else {
+            log("SJS: [unmute] Undefined video element id '" + id + "'");
+        }
+        return false;
+    }
+
+    /**
+     * Returns the volume of a video element
+     *
+     * @param id video ID
+     * @return the volume of a video element if id is defined, -1 else
+     */
+    function getVolume(id) {
+        if (id) {
+            log("SJS: [volume] Getting volume from video element id '" + id + "': " + getVideo(id).volume());
+            return getVideo(id).volume();
+        } else {
+            log("SJS: [volume] Undefined video element id '" + id + "'");
+        }
+        return -1;
     }
 
     /**
@@ -673,7 +712,6 @@
      * Initial play
      */
     function initialPlay() {
-        var myPlayer = this;
         for (var i = 0; i < videoIds.length; ++i) {
             pause(videoIds[i]);
         }
@@ -684,7 +722,6 @@
      * Initial pause
      */
     function initialPause() {
-        var myPlayer = this;
         for (var i = 0; i < videoIds.length; ++i) {
             pause(videoIds[i]);
         }
@@ -699,6 +736,66 @@
             window.clearInterval(tryToPlayWhenBufferingTimer);
             tryToPlayWhenBufferingTimer = null;
         }
+    }
+
+    /**
+     * Removes a videodisplay from the list of videos being synchronized
+     * @param videoId video ID
+     */
+    function unsyncVideo(videoId) {
+        if (videoId === masterVideoId) {
+            // if only the master video is left, no video can be removed
+            if (!selectNewMasterVideo()) {
+                return;
+            }
+        }
+        for (var i = 0; i < videoIds.length; ++i) {
+            if (videoIds[i] === videoId) {
+                videoIds.splice(i, 1);
+                pause(videoId);
+                $(document).trigger("sjs:idUnregistered", [videoId]);
+                break;
+            }
+        }
+
+    }
+
+    /**
+     * Select a new master video
+     * @return true if a new master video has been selected, false else
+     */
+    function selectNewMasterVideo() {
+        if (videoIds.length <= 1) {
+            return false;
+        }
+        var volume = getVolume(masterVideoId);
+        for (var i = 0; i < videoIds.length; ++i) {
+            if (videoIds[i] !== masterVideoId) {
+                getVideoObj(masterVideoId).off();
+                setMasterVideoId(i);
+                break;
+            }
+        }
+        registerEvents();
+        unmute(masterVideoId, volume);
+
+        return true;
+    }
+
+    /**
+     * Add a new video to the group of synced videos
+     * @param videoId video ID
+     */
+    function addVideoToSynchronization(videoId) {
+        // check whether video is already synced
+        for (var i = 0; i < videoIds.length; ++i) {
+            if (videoIds[i] === videoId) {
+                return;
+            }
+        }
+        videoIds.push(videoId);
+        $(document).trigger("sjs:idRegistered", [videoId]);
+        synchronize();
     }
 
     /**

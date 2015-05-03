@@ -23,6 +23,13 @@ Synchronize.js - Events
 - Description
 	- When a valid ID has been registered
 
+#### `sjs:idUnregistered`
+- Parameters
+	- ID(registered)
+		- ID of the unregistered argument
+- Description
+	- When a valid ID has been unregistered
+
 #### `sjs:playerLoaded`
 - Parameters
 	- ID(player)
