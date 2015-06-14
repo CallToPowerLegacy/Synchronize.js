@@ -10,7 +10,7 @@ Copyright 2013-2015 Denis Meyer [3]
 ---
 [1] http://jquery.com,
 [2] http://www.videojs.com,
-[3] GNU LGPL v2 or v3
+[3] The BSD 3-Clause License, for more information see <LICENSE.txt>
 
 Version
 -------
