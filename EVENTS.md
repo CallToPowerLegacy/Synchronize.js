@@ -133,6 +133,26 @@ Synchronize.js - Events
 - Description
 	- Tries to set the current time
 
+#### `sjs:removeFromSynch`
+- Parameters
+	- id
+	    - The video ID to be removed from synchronization
+- Description
+	- Forced unsynchronization of a specific video ID
+
+#### `sjs:addToSynch`
+- Parameters
+	- id
+	    - The video ID to be added to synchronization
+- Description
+	- Adds a new video to the synchronization
+
+#### `sjs:unsynchronize`
+- Parameters
+	- /
+- Description
+	- Forced unsynchronization, resets synchronize.js
+
 #### `sjs:synchronize`
 - Parameters
 	- /

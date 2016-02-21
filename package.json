@@ -1,7 +1,7 @@
 {
   "name": "Synchronize.js",
-  "version": "1.2.3",
-  "year": "2013-2015",
+  "version": "1.2.4",
+  "year": "2013-2016",
   "description": "A library for synchronizing multiple HTML5 video elements.",
   "author": {
     "name": "Denis Meyer",

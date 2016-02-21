@@ -1,6 +1,6 @@
 /**
  * Synchronize.js
- * Version 1.2.3
+ * Version 1.2.4
  *
  * Copyright (c) 2013-2015, Denis Meyer, calltopower88@googlemail.com
  * All rights reserved.
@@ -400,6 +400,125 @@
     }
 
     /**
+     * Fully resets all variables of synchronize.js
+     */
+    function reset() {
+        videoIds = [];
+        videoIdsReady = {};
+        videoIdsInit = {};
+        masterVidNumber = 0;
+        masterVideoId = null;
+        nrOfPlayersReady = 0;
+        isBuffering = false;
+        startClicked = false;
+        bufferCheckerSet = false;
+        bufferChecker = null;
+        playWhenBuffered = false;
+        ignoreNextPause = false;
+        hitPauseWhileBuffering = false;
+        tryToPlayWhenBufferingTimer = null;
+        tryToPlayWhenBufferingMS = 10000;
+        receivedEventLoadeddata = false;
+        receivedEventLoadeddata_interval = null;
+        waitingForSync = [];
+        usingFlash = false;
+    }
+
+    /**
+     * Select a new master video
+     *
+     * @return true if a new master video has been selected, false else
+     */
+    function selectNewMasterVideo() {
+        if (videoIds.length <= 1) {
+            return false;
+        }
+        var volume = getVolume(masterVideoId);
+        for (var i = 0; i < videoIds.length; ++i) {
+            if (videoIds[i] !== masterVideoId) {
+                getVideoObj(masterVideoId).off();
+                setMasterVideoId(i);
+                break;
+            }
+        }
+        registerEvents();
+        unmute(masterVideoId, volume);
+
+        return true;
+    }
+
+    /**
+     * Removes a videodisplay from the list of videos being synchronized
+     *
+     * @param videoId video ID
+     */
+    function unsynchronizeVideo(videoId) {
+        log('Unsynchronizing video with id ' + videoId);
+        if (videoId === masterVideoId) {
+            var masterPlayer = getVideoObj(masterVideoId);
+            if (masterPlayer) {
+                masterPlayer.off("play");
+                masterPlayer.off("pause");
+                masterPlayer.off("ratechange");
+                masterPlayer.off("ended");
+                masterPlayer.off("timeupdate");
+            }
+            // if only the master video is left, no video can be removed
+            if (!selectNewMasterVideo()) {
+                unsynchronize();
+                return;
+            }
+        }
+        console.log(videoIds);
+        for (var i = 0; i < videoIds.length; ++i) {
+            if (videoIds[i] === videoId) {
+                videoIds.splice(i, 1);
+                $(document).trigger("sjs:idUnregistered", [videoId]);
+                break;
+            }
+        }
+        registerEvents();
+        synchronize();
+        console.log(videoIds);
+
+    }
+
+    /**
+     * Add a new video to the group of synced videos
+     *
+     * @param videoId video ID
+     */
+    function addVideoToSynchronization(videoId) {
+        log('Adding video with id ' + videoId + ' to synchronization');
+        // check whether video is already synced
+        for (var i = 0; i < videoIds.length; ++i) {
+            if (videoIds[i] === videoId) {
+                return;
+            }
+        }
+        videoIds.push(videoId);
+        $(document).trigger("sjs:idRegistered", [videoId]);
+        synchronize();
+    }
+
+    /**
+     * Stops the synchronization and resets synchronize.js
+     */
+    function unsynchronize() {
+        log('Unsynchronizing all videos');
+        var masterPlayer = getVideoObj(masterVideoId);
+        if (masterPlayer) {
+            masterPlayer.off("play");
+            masterPlayer.off("pause");
+            masterPlayer.off("ratechange");
+            masterPlayer.off("ended");
+            masterPlayer.off("timeupdate");
+        }
+
+        reset();
+    }
+
+    /**
      * Synchronizes all slaves with the master
      */
     function synchronize() {
@@ -565,7 +684,6 @@
                 var now = Date.now();
                 if (((now - lastSynch) > synchInterval) || isPaused(masterVideoId)) {
                     lastSynch = now;
-                    var video;
                     var paused;
                     for (var i = 0; i < videoIds.length; ++i) {
                         if (videoIds[i] != masterVideoId) {
@@ -573,10 +691,10 @@
                             paused = isPaused(videoIds[i]);
                             synchronize();
                             /*
-							if (paused || isPaused(masterVideoId)) {
-                            pause(videoIds[i]);
-                            }
-							*/
+                             if (paused || isPaused(masterVideoId)) {
+                             pause(videoIds[i]);
+                             }
+                             */
                         }
                     }
                 }
@@ -599,8 +717,6 @@
             var allBuffered = true;
             var i;
 
-            var currTime = getCurrentTime(masterVideoId);
-
             for (i = 0; i < videoIds.length; ++i) {
                 var bufferedTimeRange = getBufferTimeRange(videoIds[i]);
                 if (bufferedTimeRange) {
@@ -617,7 +733,7 @@
                     allBuffered = allBuffered && buffered;
                     isBuffering = !allBuffered;
                 } else {
-                    // Do something?
+                    // Do nothing
                 }
             }
 
@@ -696,7 +812,7 @@
      */
     function allVideoIdsReady() {
         if (!useVideoJs()) {
-            return (nrOfPlayersReady == videoIds.length); // TODO
+            return (nrOfPlayersReady == videoIds.length);
         } else {
             for (var i = 0; i < videoIds.length; ++i) {
                 if (!videoIdsReady[videoIds[i]]) {
@@ -735,66 +851,6 @@
             window.clearInterval(tryToPlayWhenBufferingTimer);
             tryToPlayWhenBufferingTimer = null;
         }
-    }
-
-    /**
-     * Removes a videodisplay from the list of videos being synchronized
-     * @param videoId video ID
-     */
-    function unsyncVideo(videoId) {
-        if (videoId === masterVideoId) {
-            // if only the master video is left, no video can be removed
-            if (!selectNewMasterVideo()) {
-                return;
-            }
-        }
-        for (var i = 0; i < videoIds.length; ++i) {
-            if (videoIds[i] === videoId) {
-                videoIds.splice(i, 1);
-                pause(videoId);
-                $(document).trigger("sjs:idUnregistered", [videoId]);
-                break;
-            }
-        }
-
-    }
-
-    /**
-     * Select a new master video
-     * @return true if a new master video has been selected, false else
-     */
-    function selectNewMasterVideo() {
-        if (videoIds.length <= 1) {
-            return false;
-        }
-        var volume = getVolume(masterVideoId);
-        for (var i = 0; i < videoIds.length; ++i) {
-            if (videoIds[i] !== masterVideoId) {
-                getVideoObj(masterVideoId).off();
-                setMasterVideoId(i);
-                break;
-            }
-        }
-        registerEvents();
-        unmute(masterVideoId, volume);
-
-        return true;
-    }
-
-    /**
-     * Add a new video to the group of synced videos
-     * @param videoId video ID
-     */
-    function addVideoToSynchronization(videoId) {
-        // check whether video is already synced
-        for (var i = 0; i < videoIds.length; ++i) {
-            if (videoIds[i] === videoId) {
-                return;
-            }
-        }
-        videoIds.push(videoId);
-        $(document).trigger("sjs:idRegistered", [videoId]);
-        synchronize();
     }
 
     /**
@@ -953,6 +1009,22 @@
             if (allVideoIdsInitialized()) {
                 synchronize();
             }
+        });
+        $(document).on("sjs:addToSynch", function(e, id) {
+            log("SJS: Received 'sjs:addToSynch' event");
+            if (id) {
+                addVideoToSynchronization(id);
+            }
+        });
+        $(document).on("sjs:removeFromSynch", function(e, id) {
+            log("SJS: Received 'sjs:removeFromSynch' event");
+            if (id) {
+                unsynchronizeVideo(id);
+            }
+        });
+        $(document).on("sjs:unsynchronize", function(e) {
+            log("SJS: Received 'sjs:unsynchronize' event");
+            unsynchronize();
         });
         $(document).on("sjs:startBufferChecker", function(e) {
             log("SJS: Received 'sjs:startBufferChecker' event");
