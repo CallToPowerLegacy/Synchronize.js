@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2013-2015, Denis Meyer, calltopower88@googlemail.com
+ * Copyright (c) 2013-2016, Denis Meyer, calltopower88@googlemail.com
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -22,13 +22,13 @@ var loggingEnabled = true;
     mediagroupId = "videoMG1";
 
     $(document).ready(function() {
-        $(document).on("sjs:allPlayersReady", function(event) {
+        $(document).on("sjs:allPlayersReady", function() {
             $("#bufferInfo").html("All players have been successfully initialized.");
         });
-        $(document).on("sjs:buffering", function(event) {
+        $(document).on("sjs:buffering", function() {
             $("#bufferInfo").html("Not every player has buffered, yet. Pausing...");
         });
-        $(document).on("sjs:bufferedAndAutoplaying", function(event) {
+        $(document).on("sjs:bufferedAndAutoplaying", function() {
             $("#bufferInfo").html("Every player has buffered now. Starting playing again...");
         });
         $(document).on("sjs:bufferedButNotAutoplaying", function(event) {

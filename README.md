@@ -5,7 +5,7 @@ A library for synchronizing multiple HTML5 video elements.
 Implemented as a jQuery [1] plugin.
 Works with plain HTML5 video elements and with video.js [2] when video.js has been detected.
 
-Copyright 2013-2015 Denis Meyer [3]
+Copyright 2013-2016 Denis Meyer [3]
 
 ---
 [1] http://jquery.com,
@@ -14,7 +14,7 @@ Copyright 2013-2015 Denis Meyer [3]
 
 Version
 -------
-1.2.4
+1.2.5
 
 Screenshot
 ----------
@@ -54,7 +54,7 @@ Fully supported (and successfully tested):
 	- 15-26 `M`
 
 
-Not tested (yet):
+Not tested:
 
 - Firefox
 	- 26+ `W, L`
@@ -67,13 +67,6 @@ Not tested (yet):
 	- 7+ `M`
 
 
-Not fully supported:
-
-- Internet Explorer (crashes with video.js videos on page-load -- plain HTML5 works fine!)
-	- 11 `W`
-- Opera (videos lag)
-	- 12 `W, M, L`
-
 ---
 Mentioned operating systems:
 `W`indows 7+,
@@ -83,8 +76,7 @@ Mentioned operating systems:
 Attention
 ---------
 - Chrome/Chromium and Opera (15+) [4] only initialize all video displays properly when the video sources are different per video tag [5, 6]
-- for the Synchronize.js-examples to work you have to download the videos and customize the index.html files.
-- the buffer checker is currently not working in Chrome, please trigger the event "sjs:stopBufferChecker" when Chrome has been detected
+- for the Synchronize.js examples to work you have to download the videos and customize the index.html files.
 - some of the events may never be thrown + some of the functions may not be available in the minified production version: Uglify will remove "dead"/unused code
 
 ---
