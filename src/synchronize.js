@@ -190,7 +190,7 @@
                     log("SJS: [mute] Muting video element id '" + id + "'");
                     video.muted = true;
                 }
-            } else if (video.volume() <= 0) {
+            } else if (video.volume() > 0) {
                 log("SJS: [mute] Muting video element id '" + id + "'");
                 video.volume(0);
             }

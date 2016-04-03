@@ -5,7 +5,7 @@ Build
 2. Install project dependencies with npm install.
 3. Run Grunt with grunt.
 
-Building Recordr requires the following tools:
+Building Synchronize.js requires the following tools:
 
 - npm (included in the node.js distribution)
 - grunt
