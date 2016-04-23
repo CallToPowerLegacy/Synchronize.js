@@ -14,7 +14,7 @@ Copyright 2013-2016 Denis Meyer [3]
 
 Version
 -------
-1.2.5
+1.2.6
 
 Screenshot
 ----------
