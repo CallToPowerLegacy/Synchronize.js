@@ -1,3 +1,5 @@
+**Attention: This project is not under active development any more. Please email me if you want to continue development.**
+
 Synchronize.js
 ==============
 
